@@ -37,6 +37,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -60,6 +61,7 @@ import javax.swing.table.TableRowSorter;
 
 import org.openpnp.Translations;
 import org.openpnp.events.FeederSelectedEvent;
+import org.openpnp.events.JobLoadedEvent;
 import org.openpnp.gui.components.AutoSelectTextTable;
 import org.openpnp.gui.components.ClassSelectionDialog;
 import org.openpnp.gui.support.AbstractConfigurationWizard;
@@ -98,6 +100,27 @@ import com.google.common.eventbus.Subscribe;
 
 @SuppressWarnings("serial")
 public class FeedersPanel extends JPanel implements WizardContainer {
+    public enum FeederFilterMode {
+        ALL_FEEDERS("FeedersPanel.FeederFilter.AllFeeders.text"),
+        USED_IN_JOB("FeedersPanel.FeederFilter.UsedInJob.text"), 
+        NOT_USED_IN_JOB("FeedersPanel.FeederFilter.NotUsedInJob.text");
+        
+        private final String translationKey;
+        
+        FeederFilterMode(String translationKey) {
+            this.translationKey = translationKey;
+        }
+        
+        public String getDisplayName() {
+            return Translations.getString(translationKey);
+        }
+        
+        public FeederFilterMode next() {
+            FeederFilterMode[] values = values();
+            return values[(ordinal() + 1) % values.length];
+        }
+    }
+
     private final Configuration configuration;
     private final MainFrame mainFrame;
 
@@ -109,6 +132,8 @@ public class FeedersPanel extends JPanel implements WizardContainer {
     private FeedersTableModel tableModel;
     private TableRowSorter<FeedersTableModel> tableSorter;
     private JTextField searchTextField;
+    private JButton feederFilterButton;
+    private FeederFilterMode feederFilterMode = FeederFilterMode.ALL_FEEDERS;
 
     private ActionGroup singleSelectActionGroup;
     private ActionGroup multiSelectActionGroup;
@@ -175,6 +200,15 @@ public class FeedersPanel extends JPanel implements WizardContainer {
 		});
 		panel_1.add(searchTextField);
 		searchTextField.setColumns(15);
+		
+		panel_1.add(new JLabel("  ")); // Add some spacing
+		feederFilterButton = new JButton(feederFilterMode.getDisplayName());
+		feederFilterButton.addActionListener(e -> {
+		    feederFilterMode = feederFilterMode.next();
+		    feederFilterButton.setText(feederFilterMode.getDisplayName());
+		    search();
+		});
+		panel_1.add(feederFilterButton);
         JComboBox<Type> feedOptionsComboBox = new JComboBox(ReferenceFeeder.FeedOptions.values());
         JComboBox<Type> priorityComboBox = new JComboBox(ReferenceFeeder.Priority.values());
 
@@ -423,6 +457,17 @@ public class FeedersPanel extends JPanel implements WizardContainer {
         });
     }
 
+    @Subscribe
+    public void jobLoaded(JobLoadedEvent event) {
+        SwingUtilities.invokeLater(() -> {
+            // Refresh the filter when a new job is loaded in case the user has
+            // a usage-based filter enabled
+            if (feederFilterMode != FeederFilterMode.ALL_FEEDERS) {
+                search();
+            }
+        });
+    }
+
     /**
      * Activate the Feeders tab and show the Feeder for the specified Part. If none exists, prompt
      * the user to create a new one.
@@ -475,17 +520,79 @@ public class FeedersPanel extends JPanel implements WizardContainer {
         return selections;
     }
 
+    private boolean isFeederUsedInJob(String partId) {
+        Job job = mainFrame.getJobTab().getJob();
+        if (job == null || partId == null) {
+            return false;
+        }
+        
+        for (BoardLocation boardLocation : job.getBoardLocations()) {
+            // Only check enabled boards
+            if (!boardLocation.isEnabled()) {
+                continue;
+            }
+
+            for (Placement placement : boardLocation.getBoard().getPlacements()) {
+                // Ignore placements that aren't placements
+                if (placement.getType() != Placement.Type.Placement) {
+                    continue;
+                }
+                if (!placement.isEnabled()) {
+                    continue;
+                }
+
+                if (placement.getPart() != null && placement.getPart().getId().equals(partId)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private void search() {
-        RowFilter<FeedersTableModel, Object> rf = null;
-        // If current expression doesn't parse, don't update.
-        try {
-            rf = RowFilter.regexFilter("(?i)" + searchTextField.getText().trim());
+        List<RowFilter<FeedersTableModel, Object>> filters = new ArrayList<>();
+        
+        // Text search filter
+        String searchText = searchTextField.getText().trim();
+        if (!searchText.isEmpty()) {
+            try {
+                filters.add(RowFilter.regexFilter("(?i)" + searchText));
+            }
+            catch (PatternSyntaxException e) {
+                Logger.warn(e, "Search failed");
+                return;
+            }
         }
-        catch (PatternSyntaxException e) {
-            Logger.warn(e, "Search failed");
-            return;
+        
+        // Feeder usage filter
+        if (feederFilterMode != FeederFilterMode.ALL_FEEDERS) {
+            filters.add(new RowFilter<FeedersTableModel, Object>() {
+                @Override
+                public boolean include(Entry<? extends FeedersTableModel, ? extends Object> entry) {
+                    // Get the part ID from column 2
+                    String partId = (String) entry.getValue(2);
+                    boolean isUsed = isFeederUsedInJob(partId);
+                    
+                    switch (feederFilterMode) {
+                        case USED_IN_JOB:
+                            return isUsed;
+                        case NOT_USED_IN_JOB:
+                            return !isUsed;
+                        default:
+                            return true; // ALL_FEEDERS
+                    }
+                }
+            });
         }
-        tableSorter.setRowFilter(rf);
+        
+        // Combine filters
+        if (filters.isEmpty()) {
+            tableSorter.setRowFilter(null);
+        } else if (filters.size() == 1) {
+            tableSorter.setRowFilter(filters.get(0));
+        } else {
+            tableSorter.setRowFilter(RowFilter.andFilter(filters));
+        }
     }
 
     @Override
