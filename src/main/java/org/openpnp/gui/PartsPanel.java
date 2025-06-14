@@ -81,10 +81,13 @@ import org.openpnp.gui.tablemodel.PartsTableModel;
 import org.openpnp.gui.wizards.PartSettingsWizard;
 import org.openpnp.model.AbstractVisionSettings;
 import org.openpnp.model.BottomVisionSettings;
+import org.openpnp.model.BoardLocation;
 import org.openpnp.model.Configuration;
 import org.openpnp.model.Configuration.TablesLinked;
 import org.openpnp.model.FiducialVisionSettings;
+import org.openpnp.model.Job;
 import org.openpnp.model.Part;
+import org.openpnp.model.Placement;
 import org.openpnp.spi.Feeder;
 import org.openpnp.spi.FiducialLocator;
 import org.openpnp.spi.PartAlignment;
@@ -96,6 +99,26 @@ import org.simpleframework.xml.Serializer;
 @SuppressWarnings("serial")
 public class PartsPanel extends JPanel implements WizardContainer {
 
+    private enum PartFilterMode {
+        ALL_PARTS("PartsPanel.FilterMode.AllParts"),
+        USED_IN_JOB("PartsPanel.FilterMode.UsedInJob"),
+        NOT_USED_IN_JOB("PartsPanel.FilterMode.NotUsedInJob");
+        
+        private final String translationKey;
+        
+        PartFilterMode(String translationKey) {
+            this.translationKey = translationKey;
+        }
+        
+        public String getDisplayName() {
+            return Translations.getString(translationKey);
+        }
+        
+        public PartFilterMode next() {
+            PartFilterMode[] values = values();
+            return values[(ordinal() + 1) % values.length];
+        }
+    }
 
     private static final String PREF_DIVIDER_POSITION = "PartsPanel.dividerPosition";
     private static final int PREF_DIVIDER_POSITION_DEF = -1;
@@ -108,6 +131,8 @@ public class PartsPanel extends JPanel implements WizardContainer {
     private TableRowSorter<PartsTableModel> tableSorter;
     private JTextField searchTextField;
     private JTable table;
+    private JButton partFilterButton;
+    private PartFilterMode partFilterMode = PartFilterMode.ALL_PARTS;
     private ActionGroup singleSelectionActionGroup;
     private ActionGroup multiSelectionActionGroup;
     private JTabbedPane tabbedPane;
@@ -161,6 +186,15 @@ public class PartsPanel extends JPanel implements WizardContainer {
         });
         panel_1.add(searchTextField);
         searchTextField.setColumns(15);
+        
+        panel_1.add(new JLabel("  ")); // Add some spacing
+        partFilterButton = new JButton(partFilterMode.getDisplayName());
+        partFilterButton.addActionListener(e -> {
+            partFilterMode = partFilterMode.next();
+            partFilterButton.setText(partFilterMode.getDisplayName());
+            search();
+        });
+        panel_1.add(partFilterButton);
 
         JComboBox packagesCombo = new JComboBox(new PackagesComboBoxModel());
         packagesCombo.setMaximumRowCount(20);
@@ -286,17 +320,64 @@ public class PartsPanel extends JPanel implements WizardContainer {
         return selections;
     }
 
+    private boolean isPartUsedInJob(String partId) {
+        MainFrame mainFrame = MainFrame.get();
+        if (mainFrame == null || mainFrame.getJobTab() == null) {
+            return false;
+        }
+        Job job = mainFrame.getJobTab().getJob();
+        if (job == null || partId == null) {
+            return false;
+        }
+        
+        return job.getPartsInJob().stream()
+                .anyMatch(part -> part.getId().equals(partId));
+    }
+
     private void search() {
-        RowFilter<PartsTableModel, Object> rf = null;
-        // If current expression doesn't parse, don't update.
-        try {
-            rf = RowFilter.regexFilter("(?i)" + searchTextField.getText().trim());
+        List<RowFilter<PartsTableModel, Object>> filters = new ArrayList<>();
+        
+        // Text search filter
+        String searchText = searchTextField.getText().trim();
+        if (!searchText.isEmpty()) {
+            try {
+                filters.add(RowFilter.regexFilter("(?i)" + searchText));
+            }
+            catch (PatternSyntaxException e) {
+                Logger.warn(e, "Search failed");
+                return;
+            }
         }
-        catch (PatternSyntaxException e) {
-            Logger.warn(e, "Search failed");
-            return;
+        
+        // Part usage filter
+        if (partFilterMode != PartFilterMode.ALL_PARTS) {
+            filters.add(new RowFilter<PartsTableModel, Object>() {
+                @Override
+                public boolean include(Entry<? extends PartsTableModel, ? extends Object> entry) {
+                    // Get the part ID from column 0
+                    String partId = (String) entry.getValue(0);
+                    boolean isUsed = isPartUsedInJob(partId);
+                    
+                    switch (partFilterMode) {
+                        case USED_IN_JOB:
+                            return isUsed;
+                        case NOT_USED_IN_JOB:
+                            return !isUsed;
+                        default:
+                            return true; // ALL_PARTS
+                    }
+                }
+            });
         }
-        tableSorter.setRowFilter(rf);
+        
+        // Combine filters
+        if (filters.isEmpty()) {
+            tableSorter.setRowFilter(null);
+        } else if (filters.size() == 1) {
+            tableSorter.setRowFilter(filters.get(0));
+        } else {
+            tableSorter.setRowFilter(RowFilter.andFilter(filters));
+        }
     }
 
     public final Action newPartAction = new AbstractAction() {

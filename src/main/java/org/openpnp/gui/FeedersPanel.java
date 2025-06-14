@@ -526,27 +526,8 @@ public class FeedersPanel extends JPanel implements WizardContainer {
             return false;
         }
         
-        for (BoardLocation boardLocation : job.getBoardLocations()) {
-            // Only check enabled boards
-            if (!boardLocation.isEnabled()) {
-                continue;
-            }
-
-            for (Placement placement : boardLocation.getBoard().getPlacements()) {
-                // Ignore placements that aren't placements
-                if (placement.getType() != Placement.Type.Placement) {
-                    continue;
-                }
-                if (!placement.isEnabled()) {
-                    continue;
-                }
-
-                if (placement.getPart() != null && placement.getPart().getId().equals(partId)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return job.getPartsInJob().stream()
+                .anyMatch(part -> part.getId().equals(partId));
     }
 
     private void search() {

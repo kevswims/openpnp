@@ -43,6 +43,7 @@ import java.util.stream.Collectors;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -81,12 +82,15 @@ import org.openpnp.gui.wizards.PackageNozzleTipsWizard;
 import org.openpnp.gui.wizards.PackageSettingsWizard;
 import org.openpnp.gui.wizards.PackageVisionWizard;
 import org.openpnp.model.AbstractVisionSettings;
+import org.openpnp.model.BoardLocation;
 import org.openpnp.model.BottomVisionSettings;
 import org.openpnp.model.Configuration;
 import org.openpnp.model.Configuration.TablesLinked;
 import org.openpnp.model.FiducialVisionSettings;
+import org.openpnp.model.Job;
 import org.openpnp.model.Package;
 import org.openpnp.model.Part;
+import org.openpnp.model.Placement;
 import org.openpnp.spi.Camera;
 import org.openpnp.spi.FiducialLocator;
 import org.openpnp.spi.Machine;
@@ -97,6 +101,26 @@ import org.simpleframework.xml.Serializer;
 @SuppressWarnings("serial")
 public class PackagesPanel extends JPanel implements WizardContainer {
 
+    private enum PackageFilterMode {
+        ALL_PACKAGES("PackagesPanel.FilterMode.AllPackages"),
+        USED_IN_JOB("PackagesPanel.FilterMode.UsedInJob"),
+        NOT_USED_IN_JOB("PackagesPanel.FilterMode.NotUsedInJob");
+        
+        private final String translationKey;
+        
+        PackageFilterMode(String translationKey) {
+            this.translationKey = translationKey;
+        }
+        
+        public String getDisplayName() {
+            return Translations.getString(translationKey);
+        }
+        
+        public PackageFilterMode next() {
+            PackageFilterMode[] values = values();
+            return values[(ordinal() + 1) % values.length];
+        }
+    }
 
     private static final String PREF_DIVIDER_POSITION = "PackagesPanel.dividerPosition";
     private static final int PREF_DIVIDER_POSITION_DEF = -1;
@@ -109,6 +133,8 @@ public class PackagesPanel extends JPanel implements WizardContainer {
     private TableRowSorter<PackagesTableModel> tableSorter;
     private JTextField searchTextField;
     private JTable table;
+    private JButton packageFilterButton;
+    private PackageFilterMode packageFilterMode = PackageFilterMode.ALL_PACKAGES;
     private ActionGroup singleSelectionActionGroup;
     private ActionGroup multiSelectionActionGroup;
     private JTabbedPane tabbedPane;
@@ -160,6 +186,15 @@ public class PackagesPanel extends JPanel implements WizardContainer {
         });
         panel_1.add(searchTextField);
         searchTextField.setColumns(15);
+        
+        panel_1.add(new JLabel("  ")); // Add some spacing
+        packageFilterButton = new JButton(packageFilterMode.getDisplayName());
+        packageFilterButton.addActionListener(e -> {
+            packageFilterMode = packageFilterMode.next();
+            packageFilterButton.setText(packageFilterMode.getDisplayName());
+            search();
+        });
+        panel_1.add(packageFilterButton);
 
         JSplitPane splitPane = new JSplitPane();
         splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
@@ -282,17 +317,65 @@ public class PackagesPanel extends JPanel implements WizardContainer {
         }
         return selections;
     }
+    private boolean isPackageUsedInJob(String packageId) {
+        MainFrame mainFrame = MainFrame.get();
+        if (mainFrame == null || mainFrame.getJobTab() == null) {
+            return false;
+        }
+        Job job = mainFrame.getJobTab().getJob();
+        if (job == null || packageId == null) {
+            return false;
+        }
+        
+        return job.getPartsInJob().stream()
+                .anyMatch(part -> part.getPackage() != null && 
+                                 part.getPackage().getId().equals(packageId));
+    }
+
     private void search() {
-        RowFilter<PackagesTableModel, Object> rf = null;
-        // If current expression doesn't parse, don't update.
-        try {
-            rf = RowFilter.regexFilter("(?i)" + searchTextField.getText().trim());
+        List<RowFilter<PackagesTableModel, Object>> filters = new ArrayList<>();
+        
+        // Text search filter
+        String searchText = searchTextField.getText().trim();
+        if (!searchText.isEmpty()) {
+            try {
+                filters.add(RowFilter.regexFilter("(?i)" + searchText));
+            }
+            catch (PatternSyntaxException e) {
+                Logger.warn(e, "Search failed");
+                return;
+            }
         }
-        catch (PatternSyntaxException e) {
-            Logger.warn(e, "Search failed");
-            return;
+        
+        // Package usage filter
+        if (packageFilterMode != PackageFilterMode.ALL_PACKAGES) {
+            filters.add(new RowFilter<PackagesTableModel, Object>() {
+                @Override
+                public boolean include(Entry<? extends PackagesTableModel, ? extends Object> entry) {
+                    // Get the package ID from column 0
+                    String packageId = (String) entry.getValue(0);
+                    boolean isUsed = isPackageUsedInJob(packageId);
+                    
+                    switch (packageFilterMode) {
+                        case USED_IN_JOB:
+                            return isUsed;
+                        case NOT_USED_IN_JOB:
+                            return !isUsed;
+                        default:
+                            return true; // ALL_PACKAGES
+                    }
+                }
+            });
         }
-        tableSorter.setRowFilter(rf);
+        
+        // Combine filters
+        if (filters.isEmpty()) {
+            tableSorter.setRowFilter(null);
+        } else if (filters.size() == 1) {
+            tableSorter.setRowFilter(filters.get(0));
+        } else {
+            tableSorter.setRowFilter(RowFilter.andFilter(filters));
+        }
     }
 
     public final Action newPackageAction = new AbstractAction() {

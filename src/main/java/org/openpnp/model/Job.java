@@ -26,8 +26,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.openpnp.model.Placement.Type;
 import org.simpleframework.xml.Attribute;
@@ -492,6 +494,38 @@ public class Job extends AbstractModelObject implements PropertyChangeListener {
      */
     public Double getVersion() {
         return version;
+    }
+
+    /**
+     * Gets all unique parts that are used in enabled placements on enabled boards in this job.
+     * This includes both regular placements and fiducials.
+     * This method consolidates the logic for determining which parts are actively used in the job.
+     * 
+     * @return a set of all parts used in enabled placements across all enabled boards
+     */
+    public Set<Part> getPartsInJob() {
+        Set<Part> usedParts = new HashSet<>();
+        
+        for (BoardLocation boardLocation : getBoardLocations()) {
+            // Only check enabled boards
+            if (!boardLocation.isEnabled()) {
+                continue;
+            }
+            
+            for (Placement placement : boardLocation.getBoard().getPlacements()) {
+                // Only consider enabled placements
+                if (!placement.isEnabled()) {
+                    continue;
+                }
+                
+                // Add the part if it exists
+                if (placement.getPart() != null) {
+                    usedParts.add(placement.getPart());
+                }
+            }
+        }
+        
+        return usedParts;
     }
 
     /**
