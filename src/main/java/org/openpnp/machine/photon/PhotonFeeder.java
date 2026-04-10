@@ -19,18 +19,25 @@ import org.openpnp.model.Configuration;
 import org.openpnp.model.Location;
 import org.openpnp.model.Solutions;
 import org.openpnp.spi.*;
+import org.openpnp.spi.MotionPlanner.CompletionType;
 import org.openpnp.util.MovableUtils;
+import org.openpnp.util.VisionUtils;
+import org.openpnp.vision.pipeline.CvPipeline;
 import org.pmw.tinylog.Logger;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 
 import javax.swing.*;
 
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.opencv.core.RotatedRect;
 
 public class PhotonFeeder extends ReferenceFeeder {
     public static final String ACTUATOR_DATA_NAME = "PhotonFeederData";
@@ -53,6 +60,21 @@ public class PhotonFeeder extends ReferenceFeeder {
 
     @Attribute(required = false)
     protected boolean moveWhileFeeding = true;
+
+    @Element(required = false)
+    private CvPipeline pipeline;
+
+    @Attribute(required = false)
+    private int visionStabilizationCount = 10;
+
+    @Attribute(required = false)
+    private double visionStabilizationToleranceMm = 0.15;
+
+    // Runtime fields (not persisted) - reset on slot change
+    private int stabilizationFeedsDone = 0;
+    private boolean isVisionStabilized = false;
+    private int consecutiveStableCount = 0;
+    private static final int STABLE_COUNT_THRESHOLD = 3;
 
     public PhotonFeeder() {
         Configuration.get().addListener(new ConfigurationListener.Adapter() {
@@ -262,6 +284,139 @@ public class PhotonFeeder extends ReferenceFeeder {
         return actuator;
     }
 
+    public CvPipeline getPipeline() {
+        return pipeline;
+    }
+
+    public void setPipeline(CvPipeline pipeline) {
+        Object oldValue = this.pipeline;
+        this.pipeline = pipeline;
+        firePropertyChange("pipeline", oldValue, pipeline);
+    }
+
+    public int getVisionStabilizationCount() {
+        return visionStabilizationCount;
+    }
+
+    public void setVisionStabilizationCount(int visionStabilizationCount) {
+        int oldValue = this.visionStabilizationCount;
+        this.visionStabilizationCount = visionStabilizationCount;
+        firePropertyChange("visionStabilizationCount", oldValue, visionStabilizationCount);
+    }
+
+    public double getVisionStabilizationToleranceMm() {
+        return visionStabilizationToleranceMm;
+    }
+
+    public void setVisionStabilizationToleranceMm(double visionStabilizationToleranceMm) {
+        double oldValue = this.visionStabilizationToleranceMm;
+        this.visionStabilizationToleranceMm = visionStabilizationToleranceMm;
+        firePropertyChange("visionStabilizationToleranceMm", oldValue, visionStabilizationToleranceMm);
+    }
+
+    public String getVisionStabilizationStatus() {
+        if (visionStabilizationCount == 0) {
+            return "Disabled";
+        }
+        if (isVisionStabilized) {
+            return "Stabilized";
+        }
+        return String.format("Stabilizing (%d/%d)", stabilizationFeedsDone, visionStabilizationCount);
+    }
+
+    public void resetVisionStabilization() {
+        stabilizationFeedsDone = 0;
+        isVisionStabilized = false;
+        consecutiveStableCount = 0;
+        firePropertyChange("visionStabilizationStatus", null, getVisionStabilizationStatus());
+    }
+
+    public CvPipeline createDefaultPipeline() throws Exception {
+        try (InputStream is = getClass().getResourceAsStream("PhotonFeeder-DefaultPipeline.xml")) {
+            if (is == null) {
+                throw new Exception("PhotonFeeder-DefaultPipeline.xml not found in resources");
+            }
+            byte[] buffer = new byte[is.available()];
+            is.read(buffer);
+            String xmlString = new String(buffer);
+            return new CvPipeline(xmlString);
+        }
+    }
+
+    public Camera getCamera() throws Exception {
+        return Configuration.get().getMachine().getDefaultHead().getDefaultCamera();
+    }
+
+    public void detectInitialPickOffset(Camera camera) throws Exception {
+        if (getSlot() == null || getSlot().getLocation() == null) {
+            throw new UnconfiguredSlotException("Slot has no configured location");
+        }
+
+        Location startLocation = (offset != null) ? getPickLocation() : getSlot().getLocation();
+        Location detected = runVisionDetection(camera, startLocation, 3);
+        Location newOffset = detected.subtract(getSlot().getLocation());
+        setOffset(newOffset.derive(null, null, (offset != null ? offset.getZ() : 0.0), null));
+        resetVisionStabilization();
+    }
+
+    private Location runVisionDetection(Camera camera, Location startLocation, int maxPasses) throws Exception {
+        CvPipeline p = (pipeline != null) ? pipeline : createDefaultPipeline();
+        Location currentLocation = startLocation;
+
+        for (int pass = 0; pass < maxPasses; pass++) {
+            MovableUtils.moveToLocationAtSafeZ(camera, currentLocation);
+            camera.waitForCompletion(CompletionType.WaitForStillstand);
+
+            p.setProperty("camera", camera);
+            p.setProperty("feeder", this);
+            p.process();
+
+            @SuppressWarnings("unchecked")
+            List<RotatedRect> results = p.getExpectedResult(VisionUtils.PIPELINE_RESULTS_NAME)
+                    .getExpectedListModel(RotatedRect.class, new Exception("No pockets detected"));
+
+            RotatedRect best = results.stream()
+                    .min(Comparator.comparingDouble(r -> distancePx(camera, r.center)))
+                    .orElseThrow(() -> new Exception("No pockets detected"));
+
+            currentLocation = VisionUtils.getPixelLocation(camera, best.center.x, best.center.y)
+                    .derive(null, null, startLocation.getZ(), null);
+        }
+
+        return currentLocation;
+    }
+
+    private double distancePx(Camera camera, org.opencv.core.Point point) {
+        double centerX = camera.getWidth() / 2.0;
+        double centerY = camera.getHeight() / 2.0;
+        return Math.sqrt(Math.pow(point.x - centerX, 2) + Math.pow(point.y - centerY, 2));
+    }
+
+    private void runVisionStabilization(Nozzle nozzle) throws Exception {
+        Camera camera = nozzle.getHead().getDefaultCamera();
+        Location expected = getPickLocation();
+        Location detected = runVisionDetection(camera, expected, 1);
+        Location newOffset = detected.subtract(getSlot().getLocation())
+                .derive(null, null, offset.getZ(), null);
+
+        double deltaMm = newOffset.getLinearDistanceTo(offset);
+        setOffset(newOffset);
+        stabilizationFeedsDone++;
+
+        if (deltaMm < visionStabilizationToleranceMm) {
+            consecutiveStableCount++;
+        } else {
+            consecutiveStableCount = 0;
+        }
+
+        if (consecutiveStableCount >= STABLE_COUNT_THRESHOLD
+                || stabilizationFeedsDone >= visionStabilizationCount) {
+            isVisionStabilized = true;
+        }
+
+        firePropertyChange("visionStabilizationStatus", null, getVisionStabilizationStatus());
+    }
+
     private void feed(Nozzle nozzle, int distance_mm) throws Exception {
         for (int i = 0; i <= photonProperties.getFeederCommunicationMaxRetry(); i++) {
             findSlotAddressIfNeeded();
@@ -306,6 +461,17 @@ public class PhotonFeeder extends ReferenceFeeder {
                 }
 
                 if (moveFeedStatusResponse.error == ErrorTypes.NONE) {
+                    if (nozzle != null
+                            && !isVisionStabilized
+                            && stabilizationFeedsDone < visionStabilizationCount
+                            && visionStabilizationCount > 0
+                            && offset != null) {
+                        try {
+                            runVisionStabilization(nozzle);
+                        } catch (Exception e) {
+                            Logger.warn("Vision stabilization failed (non-fatal): " + e.getMessage());
+                        }
+                    }
                     return;
                 } else if (moveFeedStatusResponse.error == ErrorTypes.COULD_NOT_REACH) {
                     throw new FeedFailureException("Feeder could not reach its destination.");
@@ -428,6 +594,8 @@ public class PhotonFeeder extends ReferenceFeeder {
     }
 
     public void setSlotAddress(Integer slotAddress) {
+        resetVisionStabilization();
+
         PhotonFeederSlots.Slot oldSlot = getSlot();
         Integer oldValue = this.slotAddress;
         String oldName = this.getName();

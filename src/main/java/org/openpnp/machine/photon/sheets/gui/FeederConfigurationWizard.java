@@ -8,6 +8,7 @@ import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -18,6 +19,8 @@ import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.beansbinding.Bindings;
 import org.openpnp.Translations;
+import org.openpnp.gui.MainFrame;
+import org.openpnp.gui.components.ComponentDecorators;
 import org.openpnp.gui.components.LocationButtonsPanel;
 import org.openpnp.gui.support.AbstractConfigurationWizard;
 import org.openpnp.gui.support.DoubleConverter;
@@ -30,6 +33,9 @@ import org.openpnp.machine.photon.PhotonFeeder;
 import org.openpnp.model.Configuration;
 import org.openpnp.model.Part;
 import org.openpnp.util.UiUtils;
+import org.openpnp.vision.pipeline.CvPipeline;
+import org.openpnp.vision.pipeline.ui.CvPipelineEditor;
+import org.openpnp.vision.pipeline.ui.CvPipelineEditorDialog;
 
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
@@ -57,6 +63,9 @@ public class FeederConfigurationWizard extends AbstractConfigurationWizard {
 	private final JLabel moveWhileFeedingLabel;
 	private final JCheckBox moveWhileFeedingCheckBox;
 	private final LocationButtonsPanel slotLocationPanel;
+	private final JTextField stabilizationCountTf;
+	private final JTextField stabilizationToleranceTf;
+	private final JLabel visionStatusLabel;
 
 	/**
 	 * Create the panel.
@@ -247,6 +256,61 @@ public class FeederConfigurationWizard extends AbstractConfigurationWizard {
 		moveWhileFeedingCheckBox = new JCheckBox();
 		locationPanel.add(moveWhileFeedingCheckBox, "4, 8, left, default"); //$NON-NLS-1$
 		moveWhileFeedingCheckBox.setToolTipText(Translations.getString("FeederConfigurationWizard.LocationPanel.moveWhileFeedingLabel.toolTipText"));
+
+		JPanel visionPanel = new JPanel();
+		visionPanel.setBorder(new TitledBorder(null, "Vision", TitledBorder.LEADING, TitledBorder.TOP, null, null)); //$NON-NLS-1$
+		contentPanel.add(visionPanel);
+		visionPanel.setLayout(new FormLayout(new ColumnSpec[] {
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.DEFAULT_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("max(50dlu;pref)"), //$NON-NLS-1$
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.BUTTON_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.BUTTON_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.BUTTON_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,},
+			new RowSpec[] {
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,}));
+
+		JLabel statusLabel = new JLabel("Status:"); //$NON-NLS-1$
+		visionPanel.add(statusLabel, "2, 2, right, default"); //$NON-NLS-1$
+
+		visionStatusLabel = new JLabel(""); //$NON-NLS-1$
+		visionPanel.add(visionStatusLabel, "4, 2, 7, 1, left, default"); //$NON-NLS-1$
+
+		JLabel stabilizationCountLabel = new JLabel("Stabilization Feeds:"); //$NON-NLS-1$
+		visionPanel.add(stabilizationCountLabel, "2, 4, right, default"); //$NON-NLS-1$
+
+		stabilizationCountTf = new JTextField();
+		visionPanel.add(stabilizationCountTf, "4, 4, fill, default"); //$NON-NLS-1$
+		stabilizationCountTf.setColumns(10);
+
+		JLabel toleranceLabel = new JLabel("Tolerance (mm):"); //$NON-NLS-1$
+		visionPanel.add(toleranceLabel, "2, 6, right, default"); //$NON-NLS-1$
+
+		stabilizationToleranceTf = new JTextField();
+		visionPanel.add(stabilizationToleranceTf, "4, 6, fill, default"); //$NON-NLS-1$
+		stabilizationToleranceTf.setColumns(10);
+
+		JButton detectPocketButton = new JButton(detectPocketAction);
+		visionPanel.add(detectPocketButton, "6, 8"); //$NON-NLS-1$
+
+		JButton resetStabilizationButton = new JButton(resetStabilizationAction);
+		visionPanel.add(resetStabilizationButton, "8, 8"); //$NON-NLS-1$
+
+		JButton editPipelineButton = new JButton(editPipelineAction);
+		visionPanel.add(editPipelineButton, "10, 8"); //$NON-NLS-1$
 	}
 
 	AutoBinding<PhotonFeeder, Object, SlotProxy, Object> binding;
@@ -311,6 +375,16 @@ public class FeederConfigurationWizard extends AbstractConfigurationWizard {
 		bind(AutoBinding.UpdateStrategy.READ_WRITE, offsets, "rotation", rotOffsetTf, "text", doubleConverter); //$NON-NLS-1$ //$NON-NLS-2$
 
 		addWrappedBinding(feeder, "moveWhileFeeding", moveWhileFeedingCheckBox, "selected"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		addWrappedBinding(feeder, "visionStabilizationCount", stabilizationCountTf, "text", intConverter); //$NON-NLS-1$ //$NON-NLS-2$
+		addWrappedBinding(feeder, "visionStabilizationToleranceMm", stabilizationToleranceTf, "text", doubleConverter); //$NON-NLS-1$ //$NON-NLS-2$
+		bind(UpdateStrategy.READ, feeder, "visionStabilizationStatus", visionStatusLabel, "text"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		ComponentDecorators.decorateWithAutoSelect(stabilizationCountTf);
+		ComponentDecorators.decorateWithAutoSelect(stabilizationToleranceTf);
+
+		bind(UpdateStrategy.READ, slotProxy, "enabled", detectPocketAction, "enabled"); //$NON-NLS-1$ //$NON-NLS-2$
+		bind(UpdateStrategy.READ, slotProxy, "enabled", editPipelineAction, "enabled"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private final Action findSlotAddressAction = new AbstractAction(Translations.getString("FeederConfigurationWizard.FindSlotAddressAction.Name")) { //$NON-NLS-1$
@@ -334,6 +408,37 @@ public class FeederConfigurationWizard extends AbstractConfigurationWizard {
 		public void actionPerformed(ActionEvent e) {
 			UiUtils.submitUiMachineTask(() -> {
 				feeder.feedOneMm();
+			});
+		}
+	};
+
+	private final Action detectPocketAction = new AbstractAction("Detect Pocket") { //$NON-NLS-1$
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			UiUtils.submitUiMachineTask(() -> {
+				org.openpnp.spi.Camera camera = feeder.getCamera();
+				feeder.detectInitialPickOffset(camera);
+			});
+		}
+	};
+
+	private final Action resetStabilizationAction = new AbstractAction("Reset Stabilization") { //$NON-NLS-1$
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			feeder.resetVisionStabilization();
+		}
+	};
+
+	private final Action editPipelineAction = new AbstractAction("Edit Pipeline") { //$NON-NLS-1$
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			UiUtils.messageBoxOnException(() -> {
+				CvPipeline p = (feeder.getPipeline() != null)
+					? feeder.getPipeline() : feeder.createDefaultPipeline();
+				feeder.setPipeline(p);
+				CvPipelineEditor editor = new CvPipelineEditor(p);
+				JDialog dialog = new CvPipelineEditorDialog(MainFrame.get(), feeder.getName() + " Pipeline", editor); //$NON-NLS-1$
+				dialog.setVisible(true);
 			});
 		}
 	};

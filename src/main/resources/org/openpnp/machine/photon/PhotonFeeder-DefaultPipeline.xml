@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cv-pipeline>
+  <stages>
+    <cv-stage class="ImageCapture" name="0" enabled="true" settle-first="true"/>
+    <cv-stage class="BlurGaussian" name="1" enabled="true" kernel-size="5"/>
+    <cv-stage class="ConvertColor" name="2" enabled="true" conversion="Bgr2Gray"/>
+    <cv-stage class="Threshold" name="3" enabled="true" threshold="0" auto="true" auto-type="Otsu" invert="true"/>
+    <cv-stage class="FindContours" name="4" enabled="true" retrieval-mode="External"/>
+    <cv-stage class="FilterContours" name="5" enabled="true" min-area="50" max-area="5000"/>
+    <cv-stage class="MinAreaRectContours" name="results" enabled="true"/>
+  </stages>
+</cv-pipeline>
