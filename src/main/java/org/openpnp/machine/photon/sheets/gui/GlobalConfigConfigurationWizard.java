@@ -6,16 +6,22 @@ import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.openpnp.gui.MainFrame;
+import org.openpnp.gui.components.AutoSelectTextTable;
 import org.openpnp.gui.support.AbstractConfigurationWizard;
 import org.openpnp.gui.support.JBindings;
+import org.openpnp.gui.support.LengthCellValue;
 import org.openpnp.gui.support.MessageBoxes;
+import org.openpnp.gui.support.MonospacedFontTableCellRenderer;
+import org.openpnp.gui.support.RotationCellValue;
 import org.openpnp.machine.photon.PhotonFeeder;
+import org.openpnp.machine.photon.PhotonFeederSlots;
 import org.openpnp.machine.photon.PhotonProperties;
 import org.openpnp.model.Configuration;
 import org.openpnp.util.UiUtils;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +35,12 @@ public class GlobalConfigConfigurationWizard extends AbstractConfigurationWizard
     private final JSpinner maxFeederSpinner;
     private final JButton btnStartFeedSlotsWizard;
     private final JLabel lblNewLabel;
+    private final AutoSelectTextTable slotsTable;
+    private final PhotonFeederSlotsTableModel slotsTableModel;
+    private final JSpinner addSlotSpinner;
+    private final JButton addSlotButton;
+    private final JButton deleteSlotButton;
+    private final JButton captureSlotLocationButton;
 
     /**
      * Create the panel.
@@ -106,6 +118,59 @@ public class GlobalConfigConfigurationWizard extends AbstractConfigurationWizard
             }
         });
         programFeederSlotsPanel.add(btnStartFeedSlotsWizard, "4, 4");
+
+        JPanel slotsPanel = new JPanel();
+        slotsPanel.setBorder(new TitledBorder(null, "Slot Locations", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        contentPanel.add(slotsPanel);
+        slotsPanel.setLayout(new FormLayout(new ColumnSpec[]{
+                FormSpecs.RELATED_GAP_COLSPEC,
+                ColumnSpec.decode("4dlu:grow"),
+                FormSpecs.RELATED_GAP_COLSPEC,
+                FormSpecs.DEFAULT_COLSPEC,
+                FormSpecs.RELATED_GAP_COLSPEC,
+                FormSpecs.DEFAULT_COLSPEC,
+                FormSpecs.RELATED_GAP_COLSPEC,
+                FormSpecs.DEFAULT_COLSPEC,
+                FormSpecs.RELATED_GAP_COLSPEC,},
+                new RowSpec[]{
+                        FormSpecs.RELATED_GAP_ROWSPEC,
+                        FormSpecs.DEFAULT_ROWSPEC,
+                        FormSpecs.RELATED_GAP_ROWSPEC,
+                        RowSpec.decode("4dlu:grow"),
+                        FormSpecs.RELATED_GAP_ROWSPEC,
+                        FormSpecs.DEFAULT_ROWSPEC,
+                        FormSpecs.RELATED_GAP_ROWSPEC,}));
+
+        PhotonFeederSlots feederSlots = photonProperties.getFeederSlots();
+        slotsTableModel = new PhotonFeederSlotsTableModel(feederSlots);
+        slotsTable = new AutoSelectTextTable(slotsTableModel);
+        slotsTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        slotsTable.setDefaultRenderer(LengthCellValue.class, new MonospacedFontTableCellRenderer());
+        slotsTable.setDefaultRenderer(RotationCellValue.class, new MonospacedFontTableCellRenderer());
+
+        TableRowSorter<PhotonFeederSlotsTableModel> sorter = new TableRowSorter<>(slotsTableModel);
+        slotsTable.setRowSorter(sorter);
+
+        JScrollPane scrollPane = new JScrollPane(slotsTable);
+        slotsPanel.add(scrollPane, "2, 2, 1, 3, fill, fill");
+
+        JLabel addSlotLabel = new JLabel("Add Slot:");
+        slotsPanel.add(addSlotLabel, "4, 2, right, center");
+
+        addSlotSpinner = new JSpinner(new javax.swing.SpinnerNumberModel(1, 1, 254, 1));
+        slotsPanel.add(addSlotSpinner, "4, 2, left, center");
+
+        addSlotButton = new JButton("Add");
+        addSlotButton.addActionListener(addSlotAction);
+        slotsPanel.add(addSlotButton, "6, 2");
+
+        deleteSlotButton = new JButton("Delete");
+        deleteSlotButton.addActionListener(deleteSlotAction);
+        slotsPanel.add(deleteSlotButton, "8, 2");
+
+        captureSlotLocationButton = new JButton("Capture Camera");
+        captureSlotLocationButton.addActionListener(captureSlotLocationAction);
+        slotsPanel.add(captureSlotLocationButton, "4, 6, 5, 1");
     }
 
     @Override
@@ -140,6 +205,69 @@ public class GlobalConfigConfigurationWizard extends AbstractConfigurationWizard
             progressBarPanel.clearAllState();
             searchButton.setEnabled(true);
             maxFeederSpinner.setEnabled(true);
+        }
+    };
+
+    private final Action addSlotAction = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                int address = (Integer) addSlotSpinner.getValue();
+                PhotonFeederSlots feederSlots = photonProperties.getFeederSlots();
+                feederSlots.getSlot(address); // Auto-creates if needed
+                slotsTableModel.refresh();
+            } catch (Exception ex) {
+                MessageBoxes.errorBox(MainFrame.get(), "Error", ex);
+            }
+        }
+    };
+
+    private final Action deleteSlotAction = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int selectedRow = slotsTable.getSelectedRow();
+            if (selectedRow < 0) {
+                MessageBoxes.errorBox(MainFrame.get(), "Error", new Exception("Please select a slot to delete."));
+                return;
+            }
+
+            int modelRow = slotsTable.convertRowIndexToModel(selectedRow);
+            Object obj = slotsTableModel.getRowObjectAt(modelRow);
+            if (obj instanceof PhotonFeederSlots.Slot) {
+                PhotonFeederSlots.Slot slot = (PhotonFeederSlots.Slot) obj;
+                try {
+                    PhotonFeederSlots feederSlots = photonProperties.getFeederSlots();
+                    feederSlots.removeSlot(slot.getAddress());
+                    slotsTableModel.refresh();
+                } catch (Exception ex) {
+                    MessageBoxes.errorBox(MainFrame.get(), "Error", ex);
+                }
+            }
+        }
+    };
+
+    private final Action captureSlotLocationAction = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int selectedRow = slotsTable.getSelectedRow();
+            if (selectedRow < 0) {
+                MessageBoxes.errorBox(MainFrame.get(), "Error", new Exception("Please select a slot to capture location."));
+                return;
+            }
+
+            UiUtils.messageBoxOnException(() -> {
+                int modelRow = slotsTable.convertRowIndexToModel(selectedRow);
+                Object obj = slotsTableModel.getRowObjectAt(modelRow);
+                if (obj instanceof PhotonFeederSlots.Slot) {
+                    PhotonFeederSlots.Slot slot = (PhotonFeederSlots.Slot) obj;
+                    UiUtils.submitUiMachineTask(() -> {
+                        org.openpnp.spi.Camera camera = Configuration.get().getMachine().getDefaultHead().getDefaultCamera();
+                        org.openpnp.model.Location location = camera.getLocation();
+                        slot.setLocation(location);
+                        SwingUtilities.invokeLater(() -> slotsTableModel.refresh());
+                    });
+                }
+            });
         }
     };
 }

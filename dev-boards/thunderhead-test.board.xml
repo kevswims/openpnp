@@ -1,0 +1,919 @@
+<openpnp-board version="1.1" name="thunderhead-test.board.xml">
+   <dimensions units="Millimeters" x="0.0" y="0.0" z="0.0" rotation="0.0"/>
+   <placements>
+      <placement version="1.4" side="Top" id="C1" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="75.3" y="117.3" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C2" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="70.8" y="117.3" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C3" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="73.6" y="76.0" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C4" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="68.7" y="76.0" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C5" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="73.6" y="68.8" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C6" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="68.7" y="68.8" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C11" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="87.06" y="88.6" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C12" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="91.8" y="84.6" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C13" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="88.79" y="81.08" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C14" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="83.05" y="106.61" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C15" part-id="212-00034_220pF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="10.3" y="103.0" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C16" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="79.6" y="92.8" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C17" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="82.8" y="92.8" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C18" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="88.2" y="92.8" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C19" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="93.6" y="92.8" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C20" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="99.0" y="92.8" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C21" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="104.4" y="92.8" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C22" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="109.8" y="92.8" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C23" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="115.2" y="92.8" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C24" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="121.65" y="92.8" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C25" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="127.2" y="92.8" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C26" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="132.6" y="92.8" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C27" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="137.95" y="93.03" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C28" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="13.3" y="100.3" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C29" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="7.8" y="98.3" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C30" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="7.1" y="106.9" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C31" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="48.54" y="40.27" z="0.0" rotation="-135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C32" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="58.7524" y="44.6843" z="0.0" rotation="-45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C33" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="52.3177" y="38.1365" z="0.0" rotation="-45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C34" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="49.9" y="48.66" z="0.0" rotation="135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C35" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="46.74" y="43.67" z="0.0" rotation="135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C36" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="55.84" y="39.37" z="0.0" rotation="-45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C37" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="47.74" y="46.16" z="0.0" rotation="135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C38" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="56.84" y="47.73" z="0.0" rotation="45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C39" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="46.44" y="42.77" z="0.0" rotation="135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C40" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="54.3542" y="50.3553" z="0.0" rotation="135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C41" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="55.24" y="38.47" z="0.0" rotation="-45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C42" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="59.36" y="45.29" z="0.0" rotation="-45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C43" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="146.1876" y="38.1857" z="0.0" rotation="135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C44" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="148.1" y="35.14" z="0.0" rotation="-135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C45" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="149.1" y="43.5" z="0.0" rotation="135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C46" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="158.2" y="39.2" z="0.0" rotation="-45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C47" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="157.2" y="36.71" z="0.0" rotation="-45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C48" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="155.06" y="34.26" z="0.0" rotation="-45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C49" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="156.4" y="42.6" z="0.0" rotation="45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C50" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="152.6223" y="44.7335" z="0.0" rotation="135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C51" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="149.7" y="44.4" z="0.0" rotation="135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C52" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="150.5858" y="32.5147" z="0.0" rotation="-45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C53" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="145.58" y="37.58" z="0.0" rotation="135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C54" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="158.5" y="40.1" z="0.0" rotation="-45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C55" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="60.15" y="47.37" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C56" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="144.79" y="35.5" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C57" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="60.14" y="48.22" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C58" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="144.8" y="34.65" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C59" part-id="212-00034_220pF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="59.3888" y="43.3408" z="0.0" rotation="45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C60" part-id="212-00034_220pF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="145.5512" y="39.5292" z="0.0" rotation="-135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C61" part-id="212-00061_27pF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="53.3643" y="54.5979" z="0.0" rotation="45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C62" part-id="212-00061_27pF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="57.0412" y="50.921" z="0.0" rotation="-135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C63" part-id="212-00061_27pF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="151.5757" y="28.2721" z="0.0" rotation="-135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C64" part-id="212-00061_27pF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="147.8988" y="31.949" z="0.0" rotation="45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C65" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="163.2" y="1.55" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C66" part-id="212-00037_100uF_C_Al_Elec_5.0x5.4" type="Placement" enabled="true">
+         <location units="Millimeters" x="171.85" y="3.8" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C67" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="176.5" y="3.5" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C68" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="178.1" y="3.5" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C69" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="173.55" y="9.94" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C70" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="173.55" y="9.0" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C71" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="163.2" y="23.55" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C72" part-id="212-00037_100uF_C_Al_Elec_5.0x5.4" type="Placement" enabled="true">
+         <location units="Millimeters" x="171.85" y="25.8" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C73" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="176.5" y="25.5" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C74" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="178.1" y="25.5" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C75" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="173.55" y="31.94" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C76" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="173.55" y="31.0" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C77" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="163.2" y="45.55" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C78" part-id="212-00037_100uF_C_Al_Elec_5.0x5.4" type="Placement" enabled="true">
+         <location units="Millimeters" x="171.85" y="47.8" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C79" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="176.5" y="47.5" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C80" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="178.1" y="47.5" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C81" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="173.55" y="53.94" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C82" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="173.55" y="53.0" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C83" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="163.2" y="67.55" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C84" part-id="212-00037_100uF_C_Al_Elec_5.0x5.4" type="Placement" enabled="true">
+         <location units="Millimeters" x="171.85" y="69.8" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C85" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="176.5" y="69.5" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C86" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="178.1" y="69.5" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C87" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="173.55" y="75.94" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C88" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="173.55" y="75.0" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C89" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="36.8" y="84.45" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C90" part-id="212-00037_100uF_C_Al_Elec_5.0x5.4" type="Placement" enabled="true">
+         <location units="Millimeters" x="28.15" y="82.2" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C91" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="23.5" y="82.5" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C92" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="21.9" y="82.5" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C93" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="26.45" y="76.06" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C94" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="26.45" y="77.0" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C95" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="36.8" y="62.45" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C96" part-id="212-00037_100uF_C_Al_Elec_5.0x5.4" type="Placement" enabled="true">
+         <location units="Millimeters" x="28.15" y="60.2" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C97" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="23.5" y="60.5" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C98" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="21.9" y="60.5" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C99" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="26.45" y="54.06" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C100" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="26.45" y="55.0" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C101" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="36.8" y="40.45" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C102" part-id="212-00037_100uF_C_Al_Elec_5.0x5.4" type="Placement" enabled="true">
+         <location units="Millimeters" x="28.15" y="38.2" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C103" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="23.5" y="38.5" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C104" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="21.9" y="38.5" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C105" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="26.45" y="32.06" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C106" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="26.45" y="33.0" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C107" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="36.8" y="18.45" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C108" part-id="212-00037_100uF_C_Al_Elec_5.0x5.4" type="Placement" enabled="true">
+         <location units="Millimeters" x="28.15" y="16.2" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C109" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="23.5" y="16.5" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C110" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="21.9" y="16.5" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C111" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="26.45" y="10.06" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C112" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="26.45" y="11.0" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C113" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="147.7" y="83.64" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C114" part-id="212-00053_4.7uF_C_0603" type="Placement" enabled="true">
+         <location units="Millimeters" x="147.16" y="89.9" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C115" part-id="212-00053_4.7uF_C_0603" type="Placement" enabled="true">
+         <location units="Millimeters" x="152.42" y="90.72" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C116" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="155.52" y="103.22" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C117" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="149.9" y="98.7" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C118" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="154.82" y="92.82" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C119" part-id="212-00053_4.7uF_C_0603" type="Placement" enabled="true">
+         <location units="Millimeters" x="148.52" y="102.92" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C120" part-id="212-00053_4.7uF_C_0603" type="Placement" enabled="true">
+         <location units="Millimeters" x="163.02" y="92.56" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C121" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="161.02" y="97.82" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C122" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="155.72" y="92.82" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C123" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="152.92" y="103.22" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C124" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="149.9" y="97.73" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C125" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="161.45" y="80.44" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C126" part-id="212-00053_4.7uF_C_0603" type="Placement" enabled="true">
+         <location units="Millimeters" x="160.95" y="87.34" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C127" part-id="212-00053_4.7uF_C_0603" type="Placement" enabled="true">
+         <location units="Millimeters" x="163.1" y="102.18" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C128" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="161.02" y="96.42" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C129" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="161.02" y="99.42" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C130" part-id="212-00053_4.7uF_C_0603" type="Placement" enabled="true">
+         <location units="Millimeters" x="160.12" y="92.32" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C131" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="158.82" y="92.82" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C132" part-id="212-00062_1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="159.92" y="102.82" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C133" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="171.0" y="89.1" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C134" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="173.6" y="89.1" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C135" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="173.6" y="109.14" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C136" part-id="212-00051_0.1uF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="171.16" y="109.14" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C137" part-id="212-00061_27pF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="158.02" y="103.62" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="C138" part-id="212-00061_27pF_C_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="158.02" y="108.82" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="D1" part-id="236-00009_5V-80pF_D_SOD-523" type="Placement" enabled="true">
+         <location units="Millimeters" x="179.45" y="4.4" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="D2" part-id="236-00009_5V-80pF_D_SOD-523" type="Placement" enabled="true">
+         <location units="Millimeters" x="179.45" y="26.4" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="D3" part-id="236-00009_5V-80pF_D_SOD-523" type="Placement" enabled="true">
+         <location units="Millimeters" x="179.45" y="48.4" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="D4" part-id="236-00009_5V-80pF_D_SOD-523" type="Placement" enabled="true">
+         <location units="Millimeters" x="179.45" y="70.4" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="D5" part-id="236-00009_5V-80pF_D_SOD-523" type="Placement" enabled="true">
+         <location units="Millimeters" x="20.55" y="81.6" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="D6" part-id="236-00009_5V-80pF_D_SOD-523" type="Placement" enabled="true">
+         <location units="Millimeters" x="20.55" y="59.6" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="D7" part-id="236-00009_5V-80pF_D_SOD-523" type="Placement" enabled="true">
+         <location units="Millimeters" x="20.55" y="37.6" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="D8" part-id="236-00009_5V-80pF_D_SOD-523" type="Placement" enabled="true">
+         <location units="Millimeters" x="20.55" y="15.6" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="F1" part-id="Fiducial" type="Placement" enabled="true">
+         <location units="Millimeters" x="23.0" y="26.0" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="F4" part-id="Fiducial" type="Placement" enabled="true">
+         <location units="Millimeters" x="175.0" y="18.0" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="F5" part-id="Fiducial" type="Placement" enabled="true">
+         <location units="Millimeters" x="193.0" y="114.0" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="FB1" part-id="214-00002_220R-2A_FB_0603" type="Placement" enabled="true">
+         <location units="Millimeters" x="7.9" y="110.0" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="FB2" part-id="214-00002_220R-2A_FB_0603" type="Placement" enabled="true">
+         <location units="Millimeters" x="6.4" y="110.0" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="FB3" part-id="214-00002_220R-2A_FB_0603" type="Placement" enabled="true">
+         <location units="Millimeters" x="177.3" y="5.1" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="FB4" part-id="214-00002_220R-2A_FB_0603" type="Placement" enabled="true">
+         <location units="Millimeters" x="177.3" y="27.1" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="FB5" part-id="214-00002_220R-2A_FB_0603" type="Placement" enabled="true">
+         <location units="Millimeters" x="177.3" y="49.1" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="FB6" part-id="214-00002_220R-2A_FB_0603" type="Placement" enabled="true">
+         <location units="Millimeters" x="177.3" y="71.1" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="FB7" part-id="214-00002_220R-2A_FB_0603" type="Placement" enabled="true">
+         <location units="Millimeters" x="22.7" y="80.9" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="FB8" part-id="214-00002_220R-2A_FB_0603" type="Placement" enabled="true">
+         <location units="Millimeters" x="22.7" y="58.9" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="FB9" part-id="214-00002_220R-2A_FB_0603" type="Placement" enabled="true">
+         <location units="Millimeters" x="22.7" y="36.9" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="FB10" part-id="214-00002_220R-2A_FB_0603" type="Placement" enabled="true">
+         <location units="Millimeters" x="22.7" y="14.9" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="J1" part-id="215-00045_TSW-118-07-G-D_TSW-118-07-G-D" type="Placement" enabled="true">
+         <location units="Millimeters" x="132.0" y="25.0" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="J3" part-id="215-00048_FTSH-02x10_FTSH-110-01-L-DV-K" type="Placement" enabled="true">
+         <location units="Millimeters" x="109.595" y="113.44" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="J4" part-id="215-00010_SODIMM,-204-pin_2-2013289-1" type="Placement" enabled="true">
+         <location units="Millimeters" x="109.0" y="100.0" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="J5" part-id="215-00012_uSD-Socket_1051620001" type="Placement" enabled="true">
+         <location units="Millimeters" x="95.24" y="116.3" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="J6" part-id="215-00043_02x03-Header_TSM-103-01-T-DV" type="Placement" enabled="true">
+         <location units="Millimeters" x="151.834" y="113.898" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="J7" part-id="215-00043_02x03-Header_TSM-103-01-T-DV" type="Placement" enabled="true">
+         <location units="Millimeters" x="132.0" y="114.0" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="J8" part-id="215-00043_02x03-Header_TSM-103-01-T-DV" type="Placement" enabled="true">
+         <location units="Millimeters" x="141.05" y="114.0" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="J9" part-id="215-00013_ZH-Vert_B2B-ZR-SM4-TF" type="Placement" enabled="true">
+         <location units="Millimeters" x="7.175" y="115.8" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="J10" part-id="215-00016_USB-3-Type-A_USB-3_Type-A_Receptacle" type="Placement" enabled="true">
+         <location units="Millimeters" x="186.0" y="10.0" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="J11" part-id="215-00016_USB-3-Type-A_USB-3_Type-A_Receptacle" type="Placement" enabled="true">
+         <location units="Millimeters" x="186.0" y="32.0" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="J12" part-id="215-00016_USB-3-Type-A_USB-3_Type-A_Receptacle" type="Placement" enabled="true">
+         <location units="Millimeters" x="186.0" y="54.0" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="J13" part-id="215-00016_USB-3-Type-A_USB-3_Type-A_Receptacle" type="Placement" enabled="true">
+         <location units="Millimeters" x="186.0" y="76.0" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="J14" part-id="215-00016_USB-3-Type-A_USB-3_Type-A_Receptacle" type="Placement" enabled="true">
+         <location units="Millimeters" x="14.0" y="76.0" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="J15" part-id="215-00016_USB-3-Type-A_USB-3_Type-A_Receptacle" type="Placement" enabled="true">
+         <location units="Millimeters" x="14.0" y="54.0" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="J16" part-id="215-00016_USB-3-Type-A_USB-3_Type-A_Receptacle" type="Placement" enabled="true">
+         <location units="Millimeters" x="14.0" y="32.0" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="J17" part-id="215-00016_USB-3-Type-A_USB-3_Type-A_Receptacle" type="Placement" enabled="true">
+         <location units="Millimeters" x="14.0" y="10.0" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="J18" part-id="215-00053_RJ45-5e-+-Mag_Eth-7499111221A" type="Placement" enabled="true">
+         <location units="Millimeters" x="188.8125" y="99.0" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="L1" part-id="214-00014_PCMF3USB30Z_WLCSP15_6-3-6" type="Placement" enabled="true">
+         <location units="Millimeters" x="178.24" y="10.0" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="L2" part-id="214-00014_PCMF3USB30Z_WLCSP15_6-3-6" type="Placement" enabled="true">
+         <location units="Millimeters" x="178.24" y="32.0" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="L3" part-id="214-00014_PCMF3USB30Z_WLCSP15_6-3-6" type="Placement" enabled="true">
+         <location units="Millimeters" x="178.24" y="54.0" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="L4" part-id="214-00014_PCMF3USB30Z_WLCSP15_6-3-6" type="Placement" enabled="true">
+         <location units="Millimeters" x="178.24" y="76.0" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="L5" part-id="214-00014_PCMF3USB30Z_WLCSP15_6-3-6" type="Placement" enabled="true">
+         <location units="Millimeters" x="21.76" y="76.0" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="L6" part-id="214-00014_PCMF3USB30Z_WLCSP15_6-3-6" type="Placement" enabled="true">
+         <location units="Millimeters" x="21.76" y="54.0" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="L7" part-id="214-00014_PCMF3USB30Z_WLCSP15_6-3-6" type="Placement" enabled="true">
+         <location units="Millimeters" x="21.76" y="32.0" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="L8" part-id="214-00014_PCMF3USB30Z_WLCSP15_6-3-6" type="Placement" enabled="true">
+         <location units="Millimeters" x="21.76" y="10.0" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="MT1" part-id="469-00003_M2.5x10-Standoff_WA-SMSI_M2.5" type="Placement" enabled="true">
+         <location units="Millimeters" x="77.0" y="25.0" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="MT3" part-id="469-00001_M1.6x3-Standoff_MicroPEM_M1.6" type="Placement" enabled="true">
+         <location units="Millimeters" x="87.2" y="58.0" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="MT4" part-id="469-00001_M1.6x3-Standoff_MicroPEM_M1.6" type="Placement" enabled="true">
+         <location units="Millimeters" x="130.8" y="58.0" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="Q1" part-id="240-00003_2N7002_SOT23-3" type="Placement" enabled="true">
+         <location units="Millimeters" x="87.0" y="115.2" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R11" part-id="232-00009_10K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="87.1" y="112.7" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R12" part-id="232-00015_5.11K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="144.2" y="108.4" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R13" part-id="232-00015_5.11K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="140.4" y="108.4" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R14" part-id="232-00009_10K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="87.1" y="117.7" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R15" part-id="232-00028_1K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="91.8" y="92.8" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R16" part-id="232-00028_1K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="84.6" y="92.8" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R17" part-id="232-00027_30.1K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="11.4" y="103.0" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R18" part-id="232-00009_10K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="11.0" y="100.3" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R19" part-id="232-00009_10K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="4.6" y="98.7" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R20" part-id="232-00009_10K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="60.8" y="40.5" z="0.0" rotation="45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R21" part-id="232-00009_10K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="144.1" y="42.4" z="0.0" rotation="-135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R22" part-id="232-00028_1K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="60.1" y="42.0" z="0.0" rotation="135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R23" part-id="232-00028_1K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="144.8" y="40.9" z="0.0" rotation="-45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R24" part-id="232-00016_12K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="53.7178" y="49.7189" z="0.0" rotation="135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R25" part-id="232-00016_12K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="151.2222" y="33.1511" z="0.0" rotation="-45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R26" part-id="232-00017_200K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="58.74" y="41.87" z="0.0" rotation="135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R27" part-id="232-00017_200K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="146.2" y="41.0" z="0.0" rotation="-45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R28" part-id="232-00029_10_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="58.0329" y="41.1629" z="0.0" rotation="-45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R29" part-id="232-00029_10_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="146.9071" y="41.7071" z="0.0" rotation="135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R30" part-id="232-00054_110K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="148.96" y="88.9" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R31" part-id="232-00064_137K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="150.56" y="88.4" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R32" part-id="232-00011_100K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="162.65" y="85.94" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R33" part-id="232-00015_5.11K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="164.21" y="85.34" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R34" part-id="232-00027_30.1K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="165.27" y="85.34" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R35" part-id="232-00066_11K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="161.02" y="101.02" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="R36" part-id="232-00015_5.11K_R_0402" type="Placement" enabled="true">
+         <location units="Millimeters" x="155.52" y="105.62" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="U4" part-id="221-00067_TXS02612_WQFN-24_4x4_0.5" type="Placement" enabled="true">
+         <location units="Millimeters" x="87.8" y="84.7" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="U5" part-id="221-00026_TS4990IDT_SOIC-8" type="Placement" enabled="true">
+         <location units="Millimeters" x="7.1" y="102.9" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="U6" part-id="221-00033_USB5744_QFN-56_EP_7x7_Pitch0.4mm" type="Placement" enabled="true">
+         <location units="Millimeters" x="52.94" y="43.9913" z="0.0" rotation="-45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="U7" part-id="221-00033_USB5744_QFN-56_EP_7x7_Pitch0.4mm" type="Placement" enabled="true">
+         <location units="Millimeters" x="152.0" y="38.8787" z="0.0" rotation="135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="U8" part-id="221-00064_TPS2069E_SOT23-5" type="Placement" enabled="true">
+         <location units="Millimeters" x="165.0" y="4.0" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="U9" part-id="221-00064_TPS2069E_SOT23-5" type="Placement" enabled="true">
+         <location units="Millimeters" x="165.0" y="26.0" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="U10" part-id="221-00064_TPS2069E_SOT23-5" type="Placement" enabled="true">
+         <location units="Millimeters" x="165.0" y="48.0" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="U11" part-id="221-00064_TPS2069E_SOT23-5" type="Placement" enabled="true">
+         <location units="Millimeters" x="165.0" y="70.0" z="0.0" rotation="90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="U12" part-id="221-00064_TPS2069E_SOT23-5" type="Placement" enabled="true">
+         <location units="Millimeters" x="35.0" y="82.0" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="U13" part-id="221-00064_TPS2069E_SOT23-5" type="Placement" enabled="true">
+         <location units="Millimeters" x="35.0" y="60.0" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="U14" part-id="221-00064_TPS2069E_SOT23-5" type="Placement" enabled="true">
+         <location units="Millimeters" x="35.0" y="38.0" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="U15" part-id="221-00064_TPS2069E_SOT23-5" type="Placement" enabled="true">
+         <location units="Millimeters" x="35.0" y="16.0" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="U16" part-id="221-00069_TLV758P_SOT23-5" type="Placement" enabled="true">
+         <location units="Millimeters" x="148.16" y="86.2" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="U17" part-id="221-00069_TLV758P_SOT23-5" type="Placement" enabled="true">
+         <location units="Millimeters" x="161.95" y="82.99" z="0.0" rotation="0.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="U18" part-id="221-00068_DP83867CR_VQFN(RGZ)-48_7x7_0.5" type="Placement" enabled="true">
+         <location units="Millimeters" x="155.72" y="98.12" z="0.0" rotation="180.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="Y1" part-id="216-00002_25-MHz,-18pF_4-Terminal_3.2x2.5mm" type="Placement" enabled="true">
+         <location units="Millimeters" x="55.2027" y="52.7594" z="0.0" rotation="135.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="Y2" part-id="216-00002_25-MHz,-18pF_4-Terminal_3.2x2.5mm" type="Placement" enabled="true">
+         <location units="Millimeters" x="149.7373" y="30.1106" z="0.0" rotation="-45.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+      <placement version="1.4" side="Top" id="Y3" part-id="216-00002_25-MHz,-18pF_4-Terminal_3.2x2.5mm" type="Placement" enabled="true">
+         <location units="Millimeters" x="158.02" y="106.22" z="0.0" rotation="-90.0"/>
+         <error-handling>Default</error-handling>
+      </placement>
+   </placements>
+   <fiducials/>
+   <solder-paste-pads/>
+</openpnp-board>

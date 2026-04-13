@@ -7,6 +7,8 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 
+import java.util.List;
+
 public class PhotonFeederSlots {
     @ElementList
     IdentifiableList<Slot> slots = new IdentifiableList<>();
@@ -21,6 +23,18 @@ public class PhotonFeederSlots {
         }
 
         return slot;
+    }
+
+    public List<Slot> getSlots() {
+        return new java.util.ArrayList<>(slots);
+    }
+
+    public void removeSlot(int address) {
+        String slotIdentifier = Slot.getIdentifierFromAddress(address);
+        Slot slot = slots.get(slotIdentifier);
+        if (slot != null) {
+            slots.remove(slot);
+        }
     }
 
     public static class Slot implements Identifiable {
