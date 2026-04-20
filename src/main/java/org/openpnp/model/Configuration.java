@@ -84,6 +84,9 @@ public class Configuration extends AbstractModelObject {
     private static final String PREF_DISTANCE = "Configuration.distance";
     private static final int PREF_DISTANCE_DEF = 2;
 
+    private static final String PREF_Z_DISTANCE = "Configuration.zDistance";
+    private static final int PREF_Z_DISTANCE_DEF = 2;
+
     private static final String PREF_TABLE_LINKS = "Configuration.tableLinks";
 
     private static final String PREF_THEME_INFO = "Configuration.theme.info";
@@ -212,6 +215,14 @@ public class Configuration extends AbstractModelObject {
 
     public int getDistance() {
         return prefs.getInt(PREF_DISTANCE, PREF_DISTANCE_DEF);
+    }
+
+    public void setZDistance(int distance) {
+        prefs.putInt(PREF_Z_DISTANCE, distance);
+    }
+
+    public int getZDistance() {
+        return prefs.getInt(PREF_Z_DISTANCE, PREF_Z_DISTANCE_DEF);
     }
 
     public TablesLinked getTablesLinked() {

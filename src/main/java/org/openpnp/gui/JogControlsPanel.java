@@ -85,6 +85,7 @@ public class JogControlsPanel extends JPanel {
     private final Configuration configuration;
     private JPanel panelActuators;
     private JSlider sliderIncrements;
+    private JSlider sliderZIncrements;
     private JCheckBox boardProtectionCheck;
 
     /**
@@ -122,28 +123,39 @@ public class JogControlsPanel extends JPanel {
     }
 
     private void setUnits(LengthUnit units) {
+        Hashtable<Integer, JLabel> incrementsLabels = new Hashtable<>();
         if (units == LengthUnit.Millimeters) {
-            Hashtable<Integer, JLabel> incrementsLabels = new Hashtable<>();
-            incrementsLabels.put(1, new JLabel("0.01")); //$NON-NLS-1$
+            incrementsLabels.put(1, new JLabel("0.02")); //$NON-NLS-1$
             incrementsLabels.put(2, new JLabel("0.1")); //$NON-NLS-1$
-            incrementsLabels.put(3, new JLabel("1.0")); //$NON-NLS-1$
-            incrementsLabels.put(4, new JLabel("10")); //$NON-NLS-1$
-            incrementsLabels.put(5, new JLabel("100")); //$NON-NLS-1$
-            sliderIncrements.setLabelTable(incrementsLabels);
+            incrementsLabels.put(3, new JLabel("1")); //$NON-NLS-1$
+            incrementsLabels.put(4, new JLabel("2")); //$NON-NLS-1$
+            incrementsLabels.put(5, new JLabel("8")); //$NON-NLS-1$
+            incrementsLabels.put(6, new JLabel("16")); //$NON-NLS-1$
+            incrementsLabels.put(7, new JLabel("32")); //$NON-NLS-1$
         }
         else if (units == LengthUnit.Inches) {
-            Hashtable<Integer, JLabel> incrementsLabels = new Hashtable<>();
             incrementsLabels.put(1, new JLabel("0.001")); //$NON-NLS-1$
-            incrementsLabels.put(2, new JLabel("0.01")); //$NON-NLS-1$
-            incrementsLabels.put(3, new JLabel("0.1")); //$NON-NLS-1$
-            incrementsLabels.put(4, new JLabel("1.0")); //$NON-NLS-1$
-            incrementsLabels.put(5, new JLabel("10.0")); //$NON-NLS-1$
-            sliderIncrements.setLabelTable(incrementsLabels);
+            incrementsLabels.put(2, new JLabel("0.004")); //$NON-NLS-1$
+            incrementsLabels.put(3, new JLabel("0.04")); //$NON-NLS-1$
+            incrementsLabels.put(4, new JLabel("0.08")); //$NON-NLS-1$
+            incrementsLabels.put(5, new JLabel("0.31")); //$NON-NLS-1$
+            incrementsLabels.put(6, new JLabel("0.63")); //$NON-NLS-1$
+            incrementsLabels.put(7, new JLabel("1.25")); //$NON-NLS-1$
         }
         else {
             throw new Error("setUnits() not implemented for " + units); //$NON-NLS-1$
         }
+        sliderIncrements.setLabelTable(incrementsLabels);
+        sliderZIncrements.setLabelTable(new Hashtable<>(incrementsLabels));
         machineControlsPanel.updateDros();
+    }
+
+    private static final double[] MM_INCREMENTS = {0.02, 0.1, 1.0, 2.0, 8.0, 16.0, 32.0};
+    private static final double[] IN_INCREMENTS = {0.001, 0.004, 0.04, 0.08, 0.31, 0.63, 1.25};
+
+    private double incrementValue(int val, LengthUnit units) {
+        double[] table = (units == LengthUnit.Inches) ? IN_INCREMENTS : MM_INCREMENTS;
+        return table[val - 1];
     }
 
     public double getJogIncrement() {
@@ -151,16 +163,15 @@ public class JogControlsPanel extends JPanel {
         if (MainFrame.get().getShiftDown()) {
             val = Math.max(1, val - 2);   // finer movement by 2 levels
         }
-        if (configuration.getSystemUnits() == LengthUnit.Millimeters) {
-            return 0.01 * Math.pow(10, val - 1);
+        return incrementValue(val, configuration.getSystemUnits());
+    }
+
+    public double getZJogIncrement() {
+        int val = sliderZIncrements.getValue();
+        if (MainFrame.get().getShiftDown()) {
+            val = Math.max(1, val - 2);   // finer movement by 2 levels
         }
-        else if (configuration.getSystemUnits() == LengthUnit.Inches) {
-            return 0.001 * Math.pow(10, val - 1);
-        }
-        else {
-            throw new Error(
-                    "getJogIncrement() not implemented for " + configuration.getSystemUnits()); //$NON-NLS-1$
-        }
+        return incrementValue(val, configuration.getSystemUnits());
     }
 
     public boolean isBoardProtectionEnabled() {
@@ -191,6 +202,8 @@ public class JogControlsPanel extends JPanel {
 
         double jogIncrement =
                 new Length(getJogIncrement(), configuration.getSystemUnits()).getValue();
+        double zJogIncrement =
+                new Length(getZJogIncrement(), configuration.getSystemUnits()).getValue();
 
         if (x > 0) {
             xPos += jogIncrement;
@@ -207,10 +220,10 @@ public class JogControlsPanel extends JPanel {
         }
 
         if (z > 0) {
-            zPos += jogIncrement;
+            zPos += zJogIncrement;
         }
         else if (z < 0) {
-            zPos -= jogIncrement;
+            zPos -= zJogIncrement;
         }
 
         if (c > 0) {
@@ -312,7 +325,7 @@ public class JogControlsPanel extends JPanel {
         sliderIncrements.setSnapToTicks(true);
         sliderIncrements.setPaintLabels(true);
         sliderIncrements.setMinimum(1);
-        sliderIncrements.setMaximum(5);
+        sliderIncrements.setMaximum(7);
         sliderIncrements.addChangeListener(new ChangeListener() {
             int oldValue = configuration.getDistance();
             @Override
@@ -320,6 +333,30 @@ public class JogControlsPanel extends JPanel {
                 if (sliderIncrements.getValue() != oldValue) {
                     oldValue = sliderIncrements.getValue();
                     configuration.setDistance(oldValue);
+                }
+            }
+        });
+
+        JLabel lblZDistance = new JLabel("<html>Z Dist<br>[" + configuration.getSystemUnits().getShortName() + "]</html>"); //$NON-NLS-1$
+        lblZDistance.setFont(new Font("Lucida Grande", Font.PLAIN, 10)); //$NON-NLS-1$
+        panelControls.add(lblZDistance, "16, 2, center, center"); //$NON-NLS-1$
+
+        sliderZIncrements = new JSlider();
+        panelControls.add(sliderZIncrements, "16, 3, 1, 10"); //$NON-NLS-1$
+        sliderZIncrements.setOrientation(SwingConstants.VERTICAL);
+        sliderZIncrements.setMajorTickSpacing(1);
+        sliderZIncrements.setValue(configuration.getZDistance());
+        sliderZIncrements.setSnapToTicks(true);
+        sliderZIncrements.setPaintLabels(true);
+        sliderZIncrements.setMinimum(1);
+        sliderZIncrements.setMaximum(7);
+        sliderZIncrements.addChangeListener(new ChangeListener() {
+            int oldValue = configuration.getZDistance();
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (sliderZIncrements.getValue() != oldValue) {
+                    oldValue = sliderZIncrements.getValue();
+                    configuration.setZDistance(oldValue);
                 }
             }
         });
