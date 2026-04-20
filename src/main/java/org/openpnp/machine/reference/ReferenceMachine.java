@@ -97,6 +97,7 @@ import org.openpnp.machine.reference.wizards.ReferenceMachineConfigurationWizard
 import org.openpnp.model.Configuration;
 import org.openpnp.model.Length;
 import org.openpnp.model.LengthUnit;
+import org.openpnp.model.Location;
 import org.openpnp.model.Solutions;
 import org.openpnp.model.Solutions.Milestone;
 import org.openpnp.spi.Actuator;
@@ -154,6 +155,9 @@ public class ReferenceMachine extends AbstractMachine {
 
     @Element(required = false)
     private Length unsafeZRoamingDistance = new Length(10, LengthUnit.Millimeters);
+
+    @Element(required = false)
+    private Length defaultPickZ = new Length(0, LengthUnit.Millimeters);
 
     @Element(required = false)
     private boolean poolScriptingEngines = false;
@@ -339,6 +343,25 @@ public class ReferenceMachine extends AbstractMachine {
         Object oldValue = this.unsafeZRoamingDistance;
         this.unsafeZRoamingDistance = unsafeZRoamingDistance;
         firePropertyChange("safeRoamingDistance", oldValue, unsafeZRoamingDistance);
+    }
+
+    public Length getDefaultPickZ() {
+        return defaultPickZ;
+    }
+
+    public void setDefaultPickZ(Length defaultPickZ) {
+        Object oldValue = this.defaultPickZ;
+        this.defaultPickZ = defaultPickZ;
+        firePropertyChange("defaultPickZ", oldValue, defaultPickZ);
+    }
+
+    @Override
+    public Location getDefaultBoardLocation() {
+        Location base = super.getDefaultBoardLocation();
+        if (defaultPickZ != null && defaultPickZ.getValue() != 0 && base.getZ() == 0) {
+            return base.derive(null, null, defaultPickZ.convertToUnits(base.getUnits()).getValue(), null);
+        }
+        return base;
     }
 
     @Override

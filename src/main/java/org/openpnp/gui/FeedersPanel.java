@@ -76,11 +76,14 @@ import org.openpnp.gui.tablemodel.FeedersTableModel;
 import org.openpnp.machine.reference.vision.AbstractPartAlignment;
 import org.openpnp.machine.reference.vision.ReferenceBottomVision;
 import org.openpnp.machine.reference.ReferenceFeeder;
+import org.openpnp.machine.reference.ReferenceMachine;
+import org.openpnp.machine.reference.feeder.ReferenceStripFeeder;
 import org.openpnp.model.BoardLocation;
 import org.openpnp.model.Configuration;
 import org.openpnp.model.Configuration.TablesLinked;
 import org.openpnp.model.Job;
 import org.openpnp.model.Length;
+import org.openpnp.model.LengthUnit;
 import org.openpnp.model.Location;
 import org.openpnp.model.Part;
 import org.openpnp.model.Placement;
@@ -618,6 +621,22 @@ public class FeedersPanel extends JPanel implements WizardContainer {
             priorFeederId = null;
             
             Feeder feeder = feederClass.newInstance();
+
+            if (feeder instanceof ReferenceFeeder
+                    && configuration.getMachine() instanceof ReferenceMachine) {
+                Length defaultPickZ = ((ReferenceMachine) configuration.getMachine()).getDefaultPickZ();
+                if (defaultPickZ != null && defaultPickZ.getValue() != 0) {
+                    ReferenceFeeder rf = (ReferenceFeeder) feeder;
+                    double zValue = defaultPickZ.convertToUnits(LengthUnit.Millimeters).getValue();
+                    rf.setLocation(rf.getLocation().derive(null, null, zValue, null));
+
+                    if (feeder instanceof ReferenceStripFeeder) {
+                        ReferenceStripFeeder sf = (ReferenceStripFeeder) feeder;
+                        sf.setReferenceHoleLocation(sf.getReferenceHoleLocation().derive(null, null, zValue, null));
+                        sf.setLastHoleLocation(sf.getLastHoleLocation().derive(null, null, zValue, null));
+                    }
+                }
+            }
 
             feeder.setPart(part == null ? Configuration.get().getParts().get(0) : part);
 

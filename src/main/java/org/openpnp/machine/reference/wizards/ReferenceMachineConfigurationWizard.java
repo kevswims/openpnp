@@ -41,6 +41,7 @@ public class ReferenceMachineConfigurationWizard extends AbstractConfigurationWi
     private JTextField defaultBoardYTf;
     private JTextField defaultBoardZTf;
     private JTextField defaultBoardCTf;
+    private JTextField defaultPickZTf;
     private JComboBox motionPlannerClass;
     private boolean reloadWizard;
     private JCheckBox autoToolSelect;
@@ -171,6 +172,8 @@ public class ReferenceMachineConfigurationWizard extends AbstractConfigurationWi
                 FormSpecs.RELATED_GAP_ROWSPEC,
                 FormSpecs.DEFAULT_ROWSPEC,
                 FormSpecs.RELATED_GAP_ROWSPEC,
+                FormSpecs.DEFAULT_ROWSPEC,
+                FormSpecs.RELATED_GAP_ROWSPEC,
                 FormSpecs.DEFAULT_ROWSPEC,}));
         
                 JLabel lblX = new JLabel("X");
@@ -237,6 +240,14 @@ public class ReferenceMachineConfigurationWizard extends AbstractConfigurationWi
 		        LocationButtonsPanel defaultBoardLocationButtonsPanel =
 		                new LocationButtonsPanel(defaultBoardXTf, defaultBoardYTf, defaultBoardZTf, defaultBoardCTf);
 		panelLocations.add(defaultBoardLocationButtonsPanel, "12, 6");
+
+		        JLabel lblDefaultPickZ = new JLabel(Translations.getString(
+		                "ReferenceMachineConfigurationWizard.PanelLocations.DefaultPickZLabel.text")); //$NON-NLS-1$
+		panelLocations.add(lblDefaultPickZ, "2, 8");
+
+		        defaultPickZTf = new JTextField();
+		panelLocations.add(defaultPickZTf, "8, 8");
+		defaultPickZTf.setColumns(5);
     }
 
     @Override
@@ -282,6 +293,9 @@ public class ReferenceMachineConfigurationWizard extends AbstractConfigurationWi
         ComponentDecorators.decorateWithAutoSelectAndLengthConversion(defaultBoardYTf);
         ComponentDecorators.decorateWithAutoSelectAndLengthConversion(defaultBoardZTf);
         ComponentDecorators.decorateWithAutoSelectAndLengthConversion(defaultBoardCTf);
+
+        addWrappedBinding(machine, "defaultPickZ", defaultPickZTf, "text", lengthConverter);
+        ComponentDecorators.decorateWithAutoSelectAndLengthConversion(defaultPickZTf);
     }
 
     public String getMotionPlannerClassName() {
