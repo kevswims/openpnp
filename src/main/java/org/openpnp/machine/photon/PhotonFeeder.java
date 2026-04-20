@@ -23,6 +23,7 @@ import org.openpnp.spi.MotionPlanner.CompletionType;
 import org.openpnp.util.MovableUtils;
 import org.openpnp.util.VisionUtils;
 import org.openpnp.vision.pipeline.CvPipeline;
+import org.openpnp.vision.pipeline.CvStage;
 import org.pmw.tinylog.Logger;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
@@ -75,6 +76,9 @@ public class PhotonFeeder extends ReferenceFeeder {
     private boolean isVisionStabilized = false;
     private int consecutiveStableCount = 0;
     private static final int STABLE_COUNT_THRESHOLD = 3;
+
+    @Attribute(required = false)
+    private boolean visionEnabled = true;
 
     public PhotonFeeder() {
         Configuration.get().addListener(new ConfigurationListener.Adapter() {
@@ -331,6 +335,16 @@ public class PhotonFeeder extends ReferenceFeeder {
         firePropertyChange("visionStabilizationStatus", null, getVisionStabilizationStatus());
     }
 
+    public boolean isVisionEnabled() {
+        return visionEnabled;
+    }
+
+    public void setVisionEnabled(boolean visionEnabled) {
+        boolean oldValue = this.visionEnabled;
+        this.visionEnabled = visionEnabled;
+        firePropertyChange("visionEnabled", oldValue, visionEnabled);
+    }
+
     public CvPipeline createDefaultPipeline() throws Exception {
         try (InputStream is = getClass().getResourceAsStream("PhotonFeeder-DefaultPipeline.xml")) {
             if (is == null) {
@@ -348,6 +362,9 @@ public class PhotonFeeder extends ReferenceFeeder {
     }
 
     public void detectInitialPickOffset(Camera camera) throws Exception {
+        if (!visionEnabled) {
+            throw new Exception("Vision is disabled for this feeder");
+        }
         if (getSlot() == null || getSlot().getLocation() == null) {
             throw new UnconfiguredSlotException("Slot has no configured location");
         }
@@ -360,30 +377,47 @@ public class PhotonFeeder extends ReferenceFeeder {
     }
 
     private Location runVisionDetection(Camera camera, Location startLocation, int maxPasses) throws Exception {
-        CvPipeline p = (pipeline != null) ? pipeline : createDefaultPipeline();
-        Location currentLocation = startLocation;
+        try (CvPipeline p = (pipeline != null) ? pipeline : createDefaultPipeline()) {
+            Location currentLocation = startLocation;
 
-        for (int pass = 0; pass < maxPasses; pass++) {
-            MovableUtils.moveToLocationAtSafeZ(camera, currentLocation);
-            camera.waitForCompletion(CompletionType.WaitForStillstand);
+            for (int pass = 0; pass < maxPasses; pass++) {
+                MovableUtils.moveToLocationAtSafeZ(camera, currentLocation);
+                camera.waitForCompletion(CompletionType.WaitForStillstand);
 
-            p.setProperty("camera", camera);
-            p.setProperty("feeder", this);
-            p.process();
+                p.setProperty("camera", camera);
+                p.setProperty("feeder", this);
+                p.process();
 
-            @SuppressWarnings("unchecked")
-            List<RotatedRect> results = p.getExpectedResult(VisionUtils.PIPELINE_RESULTS_NAME)
-                    .getExpectedListModel(RotatedRect.class, new Exception("No pockets detected"));
+                CvStage.Result result = p.getExpectedResult(VisionUtils.PIPELINE_RESULTS_NAME);
+                Object model = result.getModel();
 
-            RotatedRect best = results.stream()
-                    .min(Comparator.comparingDouble(r -> distancePx(camera, r.center)))
-                    .orElseThrow(() -> new Exception("No pockets detected"));
+                RotatedRect best;
+                if (model instanceof List) {
+                    // Handle list results (e.g., from MinAreaRectContours)
+                    @SuppressWarnings("unchecked")
+                    List<RotatedRect> results = (List<RotatedRect>) model;
+                    if (results.isEmpty()) {
+                        throw new Exception("No pockets detected");
+                    }
+                    best = results.stream()
+                            .min(Comparator.comparingDouble(r -> distancePx(camera, r.center)))
+                            .orElseThrow(() -> new Exception("No pockets detected"));
+                } else if (model instanceof RotatedRect) {
+                    // Handle single RotatedRect result (e.g., from DetectRectlinearSymmetry)
+                    best = (RotatedRect) model;
+                } else {
+                    throw new Exception("Unexpected pipeline result type: " + (model != null ? model.getClass().getName() : "null"));
+                }
 
-            currentLocation = VisionUtils.getPixelLocation(camera, best.center.x, best.center.y)
-                    .derive(null, null, startLocation.getZ(), null);
+                currentLocation = VisionUtils.getPixelLocation(camera, best.center.x, best.center.y)
+                        .derive(null, null, startLocation.getZ(), null);
+
+                // Release resources after each pass to prevent memory accumulation
+                p.release();
+            }
+
+            return currentLocation;
         }
-
-        return currentLocation;
     }
 
     private double distancePx(Camera camera, org.opencv.core.Point point) {

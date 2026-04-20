@@ -66,6 +66,7 @@ public class FeederConfigurationWizard extends AbstractConfigurationWizard {
 	private final JTextField stabilizationCountTf;
 	private final JTextField stabilizationToleranceTf;
 	private final JLabel visionStatusLabel;
+	private final JCheckBox visionEnabledCheckBox;
 
 	/**
 	 * Create the panel.
@@ -281,36 +282,44 @@ public class FeederConfigurationWizard extends AbstractConfigurationWizard {
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,}));
 
+		JLabel enabledLabel = new JLabel("Enabled:"); //$NON-NLS-1$
+		visionPanel.add(enabledLabel, "2, 2, right, default"); //$NON-NLS-1$
+
+		visionEnabledCheckBox = new JCheckBox();
+		visionPanel.add(visionEnabledCheckBox, "4, 2, left, default"); //$NON-NLS-1$
+
 		JLabel statusLabel = new JLabel("Status:"); //$NON-NLS-1$
-		visionPanel.add(statusLabel, "2, 2, right, default"); //$NON-NLS-1$
+		visionPanel.add(statusLabel, "2, 4, right, default"); //$NON-NLS-1$
 
 		visionStatusLabel = new JLabel(""); //$NON-NLS-1$
-		visionPanel.add(visionStatusLabel, "4, 2, 7, 1, left, default"); //$NON-NLS-1$
+		visionPanel.add(visionStatusLabel, "4, 4, 7, 1, left, default"); //$NON-NLS-1$
 
 		JLabel stabilizationCountLabel = new JLabel("Stabilization Feeds:"); //$NON-NLS-1$
-		visionPanel.add(stabilizationCountLabel, "2, 4, right, default"); //$NON-NLS-1$
+		visionPanel.add(stabilizationCountLabel, "2, 6, right, default"); //$NON-NLS-1$
 
 		stabilizationCountTf = new JTextField();
-		visionPanel.add(stabilizationCountTf, "4, 4, fill, default"); //$NON-NLS-1$
+		visionPanel.add(stabilizationCountTf, "4, 6, fill, default"); //$NON-NLS-1$
 		stabilizationCountTf.setColumns(10);
 
 		JLabel toleranceLabel = new JLabel("Tolerance (mm):"); //$NON-NLS-1$
-		visionPanel.add(toleranceLabel, "2, 6, right, default"); //$NON-NLS-1$
+		visionPanel.add(toleranceLabel, "2, 8, right, default"); //$NON-NLS-1$
 
 		stabilizationToleranceTf = new JTextField();
-		visionPanel.add(stabilizationToleranceTf, "4, 6, fill, default"); //$NON-NLS-1$
+		visionPanel.add(stabilizationToleranceTf, "4, 8, fill, default"); //$NON-NLS-1$
 		stabilizationToleranceTf.setColumns(10);
 
 		JButton detectPocketButton = new JButton(detectPocketAction);
-		visionPanel.add(detectPocketButton, "6, 8"); //$NON-NLS-1$
+		visionPanel.add(detectPocketButton, "6, 10"); //$NON-NLS-1$
 
 		JButton resetStabilizationButton = new JButton(resetStabilizationAction);
-		visionPanel.add(resetStabilizationButton, "8, 8"); //$NON-NLS-1$
+		visionPanel.add(resetStabilizationButton, "8, 10"); //$NON-NLS-1$
 
 		JButton editPipelineButton = new JButton(editPipelineAction);
-		visionPanel.add(editPipelineButton, "10, 8"); //$NON-NLS-1$
+		visionPanel.add(editPipelineButton, "10, 10"); //$NON-NLS-1$
 	}
 
 	AutoBinding<PhotonFeeder, Object, SlotProxy, Object> binding;
@@ -376,6 +385,8 @@ public class FeederConfigurationWizard extends AbstractConfigurationWizard {
 
 		addWrappedBinding(feeder, "moveWhileFeeding", moveWhileFeedingCheckBox, "selected"); //$NON-NLS-1$ //$NON-NLS-2$
 
+		addWrappedBinding(feeder, "visionEnabled", visionEnabledCheckBox, "selected"); //$NON-NLS-1$ //$NON-NLS-2$
+
 		addWrappedBinding(feeder, "visionStabilizationCount", stabilizationCountTf, "text", intConverter); //$NON-NLS-1$ //$NON-NLS-2$
 		addWrappedBinding(feeder, "visionStabilizationToleranceMm", stabilizationToleranceTf, "text", doubleConverter); //$NON-NLS-1$ //$NON-NLS-2$
 		bind(UpdateStrategy.READ, feeder, "visionStabilizationStatus", visionStatusLabel, "text"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -415,9 +426,17 @@ public class FeederConfigurationWizard extends AbstractConfigurationWizard {
 	private final Action detectPocketAction = new AbstractAction("Detect Pocket") { //$NON-NLS-1$
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			UiUtils.submitUiMachineTask(() -> {
-				org.openpnp.spi.Camera camera = feeder.getCamera();
-				feeder.detectInitialPickOffset(camera);
+			UiUtils.messageBoxOnException(() -> {
+				if (feeder.getSlot() == null) {
+					throw new Exception("No slot selected");
+				}
+				if (feeder.getSlot().getLocation() == null) {
+					throw new Exception("Slot location not configured. Set the slot location first.");
+				}
+				UiUtils.submitUiMachineTask(() -> {
+					org.openpnp.spi.Camera camera = feeder.getCamera();
+					feeder.detectInitialPickOffset(camera);
+				});
 			});
 		}
 	};
@@ -436,6 +455,14 @@ public class FeederConfigurationWizard extends AbstractConfigurationWizard {
 				CvPipeline p = (feeder.getPipeline() != null)
 					? feeder.getPipeline() : feeder.createDefaultPipeline();
 				feeder.setPipeline(p);
+				// Set camera and feeder properties so stages can initialize properly
+				try {
+					org.openpnp.spi.Camera camera = feeder.getCamera();
+					p.setProperty("camera", camera);
+					p.setProperty("feeder", feeder);
+				} catch (Exception ex) {
+					// Camera may not be available, but pipeline editor can still be used
+				}
 				CvPipelineEditor editor = new CvPipelineEditor(p);
 				JDialog dialog = new CvPipelineEditorDialog(MainFrame.get(), feeder.getName() + " Pipeline", editor); //$NON-NLS-1$
 				dialog.setVisible(true);

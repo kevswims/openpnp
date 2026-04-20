@@ -78,17 +78,17 @@ public class PhotonFeederSlotsTableModel extends AbstractObjectTableModel {
                 return slot.getAddress();
             case 1:
                 if (loc == null) {
-                    return new LengthCellValue("");
+                    return new LengthCellValue(new Length(0, Configuration.get().getSystemUnits()), true, true);
                 }
                 return new LengthCellValue(loc.getLengthX(), true, true);
             case 2:
                 if (loc == null) {
-                    return new LengthCellValue("");
+                    return new LengthCellValue(new Length(0, Configuration.get().getSystemUnits()), true, true);
                 }
                 return new LengthCellValue(loc.getLengthY(), true, true);
             case 3:
                 if (loc == null) {
-                    return new LengthCellValue("");
+                    return new LengthCellValue(new Length(0, Configuration.get().getSystemUnits()), true, true);
                 }
                 return new LengthCellValue(loc.getLengthZ(), true, true);
             case 4:

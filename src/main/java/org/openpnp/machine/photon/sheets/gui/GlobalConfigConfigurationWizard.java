@@ -8,6 +8,7 @@ import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.openpnp.gui.MainFrame;
 import org.openpnp.gui.components.AutoSelectTextTable;
 import org.openpnp.gui.support.AbstractConfigurationWizard;
+import org.openpnp.gui.support.Icons;
 import org.openpnp.gui.support.JBindings;
 import org.openpnp.gui.support.LengthCellValue;
 import org.openpnp.gui.support.MessageBoxes;
@@ -17,6 +18,7 @@ import org.openpnp.machine.photon.PhotonFeeder;
 import org.openpnp.machine.photon.PhotonFeederSlots;
 import org.openpnp.machine.photon.PhotonProperties;
 import org.openpnp.model.Configuration;
+import org.openpnp.util.MovableUtils;
 import org.openpnp.util.UiUtils;
 
 import javax.swing.*;
@@ -37,9 +39,7 @@ public class GlobalConfigConfigurationWizard extends AbstractConfigurationWizard
     private final JLabel lblNewLabel;
     private final AutoSelectTextTable slotsTable;
     private final PhotonFeederSlotsTableModel slotsTableModel;
-    private final JSpinner addSlotSpinner;
-    private final JButton addSlotButton;
-    private final JButton deleteSlotButton;
+    private final JButton moveCameraButton;
     private final JButton captureSlotLocationButton;
 
     /**
@@ -129,8 +129,6 @@ public class GlobalConfigConfigurationWizard extends AbstractConfigurationWizard
                 FormSpecs.DEFAULT_COLSPEC,
                 FormSpecs.RELATED_GAP_COLSPEC,
                 FormSpecs.DEFAULT_COLSPEC,
-                FormSpecs.RELATED_GAP_COLSPEC,
-                FormSpecs.DEFAULT_COLSPEC,
                 FormSpecs.RELATED_GAP_COLSPEC,},
                 new RowSpec[]{
                         FormSpecs.RELATED_GAP_ROWSPEC,
@@ -154,23 +152,15 @@ public class GlobalConfigConfigurationWizard extends AbstractConfigurationWizard
         JScrollPane scrollPane = new JScrollPane(slotsTable);
         slotsPanel.add(scrollPane, "2, 2, 1, 3, fill, fill");
 
-        JLabel addSlotLabel = new JLabel("Add Slot:");
-        slotsPanel.add(addSlotLabel, "4, 2, right, center");
+        moveCameraButton = new JButton(Icons.centerCamera);
+        moveCameraButton.setToolTipText("Move Camera to Slot");
+        moveCameraButton.addActionListener(moveCameraAction);
+        slotsPanel.add(moveCameraButton, "4, 6");
 
-        addSlotSpinner = new JSpinner(new javax.swing.SpinnerNumberModel(1, 1, 254, 1));
-        slotsPanel.add(addSlotSpinner, "4, 2, left, center");
-
-        addSlotButton = new JButton("Add");
-        addSlotButton.addActionListener(addSlotAction);
-        slotsPanel.add(addSlotButton, "6, 2");
-
-        deleteSlotButton = new JButton("Delete");
-        deleteSlotButton.addActionListener(deleteSlotAction);
-        slotsPanel.add(deleteSlotButton, "8, 2");
-
-        captureSlotLocationButton = new JButton("Capture Camera");
+        captureSlotLocationButton = new JButton(Icons.captureCamera);
+        captureSlotLocationButton.setToolTipText("Capture Camera Location");
         captureSlotLocationButton.addActionListener(captureSlotLocationAction);
-        slotsPanel.add(captureSlotLocationButton, "4, 6, 5, 1");
+        slotsPanel.add(captureSlotLocationButton, "6, 6");
     }
 
     @Override
@@ -205,44 +195,37 @@ public class GlobalConfigConfigurationWizard extends AbstractConfigurationWizard
             progressBarPanel.clearAllState();
             searchButton.setEnabled(true);
             maxFeederSpinner.setEnabled(true);
+            slotsTableModel.refresh();
         }
     };
 
-    private final Action addSlotAction = new AbstractAction() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try {
-                int address = (Integer) addSlotSpinner.getValue();
-                PhotonFeederSlots feederSlots = photonProperties.getFeederSlots();
-                feederSlots.getSlot(address); // Auto-creates if needed
-                slotsTableModel.refresh();
-            } catch (Exception ex) {
-                MessageBoxes.errorBox(MainFrame.get(), "Error", ex);
-            }
-        }
-    };
-
-    private final Action deleteSlotAction = new AbstractAction() {
+    private final Action moveCameraAction = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
             int selectedRow = slotsTable.getSelectedRow();
             if (selectedRow < 0) {
-                MessageBoxes.errorBox(MainFrame.get(), "Error", new Exception("Please select a slot to delete."));
+                MessageBoxes.errorBox(MainFrame.get(), "Error", new Exception("Please select a slot."));
                 return;
             }
 
-            int modelRow = slotsTable.convertRowIndexToModel(selectedRow);
-            Object obj = slotsTableModel.getRowObjectAt(modelRow);
-            if (obj instanceof PhotonFeederSlots.Slot) {
-                PhotonFeederSlots.Slot slot = (PhotonFeederSlots.Slot) obj;
-                try {
-                    PhotonFeederSlots feederSlots = photonProperties.getFeederSlots();
-                    feederSlots.removeSlot(slot.getAddress());
-                    slotsTableModel.refresh();
-                } catch (Exception ex) {
-                    MessageBoxes.errorBox(MainFrame.get(), "Error", ex);
+            UiUtils.messageBoxOnException(() -> {
+                int modelRow = slotsTable.convertRowIndexToModel(selectedRow);
+                Object obj = slotsTableModel.getRowObjectAt(modelRow);
+                if (obj instanceof PhotonFeederSlots.Slot) {
+                    PhotonFeederSlots.Slot slot = (PhotonFeederSlots.Slot) obj;
+                    org.openpnp.model.Location location = slot.getLocation();
+                    if (location == null) {
+                        MessageBoxes.errorBox(MainFrame.get(), "Error", new Exception("Slot location not set."));
+                        return;
+                    }
+
+                    UiUtils.submitUiMachineTask(() -> {
+                        org.openpnp.spi.Camera camera = Configuration.get().getMachine().getDefaultHead().getDefaultCamera();
+                        MovableUtils.moveToLocationAtSafeZ(camera, location);
+                        return null;
+                    });
                 }
-            }
+            });
         }
     };
 

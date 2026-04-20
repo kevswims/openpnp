@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cv-pipeline>
-  <stages>
-    <cv-stage class="ImageCapture" name="0" enabled="true" settle-first="true"/>
-    <cv-stage class="BlurGaussian" name="1" enabled="true" kernel-size="5"/>
-    <cv-stage class="ConvertColor" name="2" enabled="true" conversion="Bgr2Gray"/>
-    <cv-stage class="Threshold" name="3" enabled="true" threshold="0" auto="true" auto-type="Otsu" invert="true"/>
-    <cv-stage class="FindContours" name="4" enabled="true" retrieval-mode="External"/>
-    <cv-stage class="FilterContours" name="5" enabled="true" min-area="50" max-area="5000"/>
-    <cv-stage class="MinAreaRectContours" name="results" enabled="true"/>
-  </stages>
+   <stages>
+      <cv-stage class="org.openpnp.vision.pipeline.stages.ParameterBool" name="pSymmetricLeftRight" enabled="true" parameter-label="Symmetry Left/Right" parameter-description="Switch On if parts are symmetric Left/Right (seen in 0° rotation)." stage-name="results" property-name="symmetricLeftRight" effect-stage-name="results" preview-result="true" invert="false" default-value="true"/>
+      <cv-stage class="org.openpnp.vision.pipeline.stages.ParameterBool" name="pSymmetricUpperLower" enabled="true" parameter-label="Symmetry Upper/Lower" parameter-description="Switch On if parts are symmetric Upper/Lower (seen in 0° rotation)" stage-name="results" property-name="symmetricUpperLower" effect-stage-name="results" preview-result="true" invert="false" default-value="true"/>
+      <cv-stage class="org.openpnp.vision.pipeline.stages.ParameterNumeric" name="pThreshold" enabled="true" parameter-label="Threshold" parameter-description="Threshold brightness for relevant image elements (shiny contacts). Only relevant for asymmetric detection." stage-name="results" property-name="threshold" effect-stage-name="results" preview-result="true" minimum-value="1.0" maximum-value="254.0" default-value="128.0" numeric-type="Integer"/>
+      <cv-stage class="org.openpnp.vision.pipeline.stages.ParameterNumeric" name="pMinDetail" enabled="true" parameter-label="Min. Detail Size" parameter-description="Minimum Detail Size that should be considered masked. Only relevant for asymmetric detection." stage-name="results" property-name="minFeatureSize" effect-stage-name="results" preview-result="true" minimum-value="0.0" maximum-value="0.8" default-value="0.05" numeric-type="MillimetersToPixels"/>
+      <cv-stage class="org.openpnp.vision.pipeline.stages.ImageCapture" name="0" enabled="true" default-light="true" settle-option="Settle" count="1"/>
+      <cv-stage class="org.openpnp.vision.pipeline.stages.ImageWriteDebug" name="deb0" enabled="true" prefix="bv_source_" suffix=".png"/>
+      <cv-stage class="org.openpnp.vision.pipeline.stages.BlurGaussian" name="2" enabled="true" kernel-size="7" property-name="BlurGaussian"/>
+      <cv-stage class="org.openpnp.vision.pipeline.stages.MaskCircle" name="3" enabled="true" diameter="500" property-name="MaskCircle"/>
+      <cv-stage class="org.openpnp.vision.pipeline.stages.ConvertColor" name="6" enabled="true" conversion="Bgr2Gray"/>
+      <cv-stage class="org.openpnp.vision.pipeline.stages.DetectRectlinearSymmetry" name="results" enabled="true" expected-angle="0.0" search-distance="100.0" search-angle="30.0" max-width="100.0" max-height="60.0" symmetric-left-right="true" symmetric-upper-lower="true" symmetric-function="EdgeSymmetry" asymmetric-function="OutlineSymmetryMasked" min-symmetry="7.0" sub-sampling="4" super-sampling="2" smoothing="10" gamma="10.0" threshold="128" min-feature-size="4.666631528971041" diagnostics="true" diagnostics-map="false" property-name="DetectRectlinearSymmetry"/>
+      <cv-stage class="org.openpnp.vision.pipeline.stages.ImageRecall" name="8" enabled="true" image-stage-name="0"/>
+      <cv-stage class="org.openpnp.vision.pipeline.stages.DrawRotatedRects" name="9" enabled="true" rotated-rects-stage-name="results" thickness="2" draw-rect-center="false" rect-center-radius="20" show-orientation="true"/>
+      <cv-stage class="org.openpnp.vision.pipeline.stages.ImageWriteDebug" name="deb1" enabled="true" prefix="bv_result_" suffix=".png"/>
+   </stages>
 </cv-pipeline>

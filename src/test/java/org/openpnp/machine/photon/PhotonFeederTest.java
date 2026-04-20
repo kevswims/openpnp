@@ -1265,4 +1265,25 @@ public class PhotonFeederTest {
 
         assertEquals(expectedLocation, actualLocation);
     }
+
+    @Test
+    public void createDefaultPipelineLoadsSuccessfully() throws Exception {
+        // This test validates that the default pipeline XML can be deserialized without errors
+        org.openpnp.vision.pipeline.CvPipeline pipeline = feeder.createDefaultPipeline();
+
+        assertNotNull(pipeline);
+        assertNotNull(pipeline.getStages());
+
+        // Verify we have at least some stages (exact count may vary based on pipeline tuning)
+        assertTrue(pipeline.getStages().size() > 0, "Pipeline should have at least one stage");
+
+        // Verify key stage names exist
+        boolean hasImageCapture = pipeline.getStages().stream()
+                .anyMatch(s -> "0".equals(s.getName()));
+        assertTrue(hasImageCapture, "Pipeline should have ImageCapture stage (name='0')");
+
+        boolean hasDetectionStage = pipeline.getStages().stream()
+                .anyMatch(s -> "results".equals(s.getName()));
+        assertTrue(hasDetectionStage, "Pipeline should have results detection stage");
+    }
 }
